@@ -1,12 +1,15 @@
+//imports
 import express = require("express");
+import http = require("http");
+import {createSocket} from "../socket/socket";
 
-// Create a new express app instance
-const app: express.Application = express();
+//init app, server and socket
+const app = express();
+const server = http.createServer(app);
+createSocket(server);
 
-app.get("/", function (req, res) {
-    res.send("yarra");
-});
-
-app.listen(5000, function () {
-    console.log("App is listening on por");
+//listen to port
+const port = process.env.PORT || 5000
+server.listen(port,() =>{
+  console.log(`server running at port ${port}`);
 });
