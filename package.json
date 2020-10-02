@@ -8,7 +8,13 @@
     "build": "tsc",
     "prod": "tsc && npm run start",
     "dev": "tsc && nodemon --ext ts --exec \"ts-node server/server.ts\"",
-    "client":"npm run start --prefix client"
+    "client": "npm run start --prefix client"
+  },
+  "nodemonConfig": {
+    "verbose": true,
+    "ignore": [
+      "client/*"
+    ]
   },
   "author": "Raader",
   "license": "ISC",
@@ -16,8 +22,10 @@
     "@types/express": "^4.17.8",
     "@types/http-server": "^0.10.0",
     "@types/socket.io": "^2.1.11",
+    "@types/uuid": "^8.3.0",
     "express": "^4.17.1",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
