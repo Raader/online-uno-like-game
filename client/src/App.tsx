@@ -64,13 +64,29 @@ function Home(props:SocketProps) {
 function Game(props:SocketProps) {
   const params = useParams<{roomID:string}>();
   const [name,setName] = useState("");
+  const [players,setPlayers] = useState<Array<string>>([]);
+  const history = useHistory();
+  useEffect(() =>{
+    if(!props.socket) return;
+    props.socket.on("playerList",(list:Array<string>) => {
+      setPlayers(list);
+    });
+  },[props.socket])
 
   function handleChange(e: { target: HTMLInputElement; }){
     setName(e.target.value)
   }
+
   return (
     <div>
       <h1>Game</h1>
+      <div>
+        {players.map(val => <h1>{val}</h1>)}
+      </div>
+      <button onClick={() => {
+        props.socket?.emit("leaveRoom");
+        history.push("/");
+    }}>Leave Room</button>
       <input placeholder="name" value={name} onChange={handleChange}></input>
       <button onClick={() =>{
         console.log(params.roomID);

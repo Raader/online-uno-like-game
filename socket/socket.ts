@@ -4,6 +4,13 @@ import uuid = require("uuid");
 
 interface Player{
     user:User;
+    deck: Array<Card> | undefined;
+}
+
+interface Card{
+    num:Number;
+    name:"normal" | "+2" | "+4" | "direction" | "skip";
+    color: "blue" | "green" | "yellow" | "red" | "black";
 }
 
 class Room{
@@ -14,12 +21,22 @@ class Room{
         this.id = uuid.v4();
     }
 
-    addPlayer(user:User){
+    addPlayer(user:User,callback:(pList:Array<Player>) => void){
         if(this.players.length < 4){
+            //add player to players
             this.players.push({
-                user
+                user,
+                deck:undefined
             });
+            //notify players
+            callback(this.players);       
         }
+    }
+    
+    removePlayer(user:User,calback:(plist:Array<Player>) => void){
+        const index = this.players.findIndex((val) => val.user === user);
+        this.players.splice(index,1);
+        calback(this.players);
     }
 }
 
@@ -43,10 +60,14 @@ export function createSocket(server:http.Server){
         console.log("a client has connected");
         const user = new User(socket);
         users.push(user);
-        
+
         socket.on("createRoom",() =>{
+            //check if user is already in a room
+            if(user.room) return;
+            //create room
             const room = new Room();
             rooms.push(room);
+            //notify users about the room
             socket.emit("createRoom",room.id);
             console.log("new room" + room.id);
         });
@@ -59,9 +80,40 @@ export function createSocket(server:http.Server){
             if(!room) return;
             //join user to the room
             user.name = name;
-            room.addPlayer(user);
-            user.room = room
-            console.log(`${name} joined room: ${room.id}`);
+            user.room = room;
+            user.socket.join(room.id);
+            room.addPlayer(user,(players) => {
+                io.to(room.id).emit("playerList",players.map((val) => val.user.name));
+                console.log(`${user.name} joined the room: ${room.id}`);
+            });
+        });
+
+        socket.on("leaveRoom",() =>{
+            //remove user from the room if he joined any
+            const room = user.room;
+            if(room){
+                room.removePlayer(user,(players) =>{
+                    user.room = undefined;
+                    io.to(room.id).emit("playerList",players.map((val) => val.user.name));
+                    console.log(`${user.name} left the room: ${room.id}`);
+                }); 
+            }
         })
+        socket.on("disconnecting",() =>{
+            //remove user from the room if he joined any
+            const room = user.room;
+            if(room){
+                room.removePlayer(user,(players) =>{
+                    user.room = undefined;
+                    io.to(room.id).emit("playerList",players.map((val) => val.user.name));
+                    console.log(`${user.name} left the room: ${room.id}`);
+                }); 
+            }
+        });
+
+        socket.on("disconnect",() =>{
+            users.splice(users.indexOf(user),1);
+            console.log(`${user.name} disconnected`);
+        });
     })
 }
