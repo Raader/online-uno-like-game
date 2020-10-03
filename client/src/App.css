@@ -35,25 +35,51 @@
   background-color: rgba(255, 255, 255, 0.575);
   border: 3px solid rgb(53, 53, 53);
   border-radius: 10px;
+  
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  overflow-x: hidden;
+}
+.port-cont{
   margin: 0;
   position: relative;
   top: 50%;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-
-.card-grave{
-  width: 150px;
-  height: 250px;
-  background-color: rgba(240, 248, 255, 0.664);
-  border: 3px solid rgb(53, 53, 53);
-  border-radius: 5px;
+.grave{
+  width: 300px;
+  height: 300px;
   margin: 0.5cm;
 }
 
+.gcard{
+  width: 150px;
+  height: 250px;
+  background-color: rgba(240, 248, 255, 0.664);
+  border: 6px solid rgb(53, 53, 53);
+  border-radius: 5px;
+}
+.deck{
+  margin: 0.5cm;
+  background-color: rgba(240, 248, 255, 0.486);
+  border: 3px solid rgb(53, 53, 53);
+  border-radius: 5px;
+  padding: 15px;
+}
 .game-area{
   margin-top: 0.5cm;
   margin-bottom: 0.5cm;
+  background-color: rgba(240, 248, 255, 0.664);
+  border-radius: 100px;
+  border: 3px solid rgb(53, 53, 53);
+}
+
+.c-slot{
+  float: left;
+  margin: 0.1cm;
 }
 
 @keyframes App-logo-spin {
