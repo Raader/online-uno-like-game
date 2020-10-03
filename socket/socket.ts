@@ -15,10 +15,12 @@ interface Card{
 
 class Room{
     id:string;
+    owner:User;
     players: Array<Player> = [];
 
-    constructor(){
+    constructor(owner:User){
         this.id = uuid.v4();
+        this.owner = owner;
     }
 
     addPlayer(user:User,callback:(pList:Array<Player>) => void){
@@ -37,6 +39,12 @@ class Room{
         const index = this.players.findIndex((val) => val.user === user);
         this.players.splice(index,1);
         calback(this.players);
+    }
+
+    startGame(user:User,callback:() => void){
+        if(user === this.owner && this.players.length > 1){
+            callback();
+        }
     }
 }
 
@@ -65,7 +73,7 @@ export function createSocket(server:http.Server){
             //check if user is already in a room
             if(user.room) return;
             //create room
-            const room = new Room();
+            const room = new Room(user);
             rooms.push(room);
             //notify users about the room
             socket.emit("createRoom",room.id);
@@ -98,7 +106,19 @@ export function createSocket(server:http.Server){
                     console.log(`${user.name} left the room: ${room.id}`);
                 }); 
             }
-        })
+        });
+
+        socket.on("startGame",() =>{
+            const room = user.room;
+            //check if user is in a room
+            if(!room) return;
+            
+            //start the game
+            room.startGame(user,() => {
+                io.to(room.id).emit("startGame");
+            }); 
+        });
+
         socket.on("disconnecting",() =>{
             //remove user from the room if he joined any
             const room = user.room;
