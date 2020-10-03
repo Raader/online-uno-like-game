@@ -29,6 +29,33 @@
   color: #61dafb;
 }
 
+.portrait{
+  width: 128px;
+  height: 128px;
+  background-color: rgba(255, 255, 255, 0.575);
+  border: 3px solid rgb(53, 53, 53);
+  border-radius: 10px;
+  margin: 0;
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.card-grave{
+  width: 150px;
+  height: 250px;
+  background-color: rgba(240, 248, 255, 0.664);
+  border: 3px solid rgb(53, 53, 53);
+  border-radius: 5px;
+  margin: 0.5cm;
+}
+
+.game-area{
+  margin-top: 0.5cm;
+  margin-bottom: 0.5cm;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

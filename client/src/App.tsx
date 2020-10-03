@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import './App.css';
 import io from "socket.io-client";
 import {
@@ -60,7 +60,7 @@ function Home(props:SocketProps) {
         <Row>
           <Col className="mx-auto" md="auto">
           <InputGroup className="mb-3">
-          <FormControl
+          <FormControl style={{backgroundColor:"rgba(245, 245, 245, 0.589)"}}
           placeholder="Room ID"
           aria-label="Recipient's username"
           aria-describedby="basic-addon2"
@@ -91,11 +91,15 @@ function Game(props:SocketProps) {
   const [name,setName] = useState("");
   const [players,setPlayers] = useState<Array<string>>([]);
   const history = useHistory();
+  const [start,setStart] = useState(false)
   useEffect(() =>{
     if(!props.socket) return;
     props.socket.on("playerList",(list:Array<string>) => {
       setPlayers(list);
     });
+    props.socket.on("startGame",() =>{
+      setStart(true);
+    })
   },[props.socket])
 
   function handleChange(e: { target: HTMLInputElement; }){
@@ -112,6 +116,8 @@ function Game(props:SocketProps) {
           </div>
           </Col>
         </Row>
+        {!true ?
+        (
         <Row>
           {players.length !== 0 ?
           (
@@ -123,6 +129,7 @@ function Game(props:SocketProps) {
           <div className="user-list">
             {players.map((val,index) => <h1 key={index}>{val}</h1>)}
           </div>
+          <Button variant="outline-dark" onClick={() => props.socket?.emit("startGame")}>Start Game</Button>
           </Col>
           )
           : 
@@ -145,6 +152,57 @@ function Game(props:SocketProps) {
           )
           }
         </Row>
+        )
+        :
+        (
+        <Fragment>
+        <Row>
+          <Col>
+          </Col>
+          <Col>
+            <div className="mx-auto portrait">
+
+            </div>
+          </Col>
+          <Col>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+          <div className="mx-auto portrait">
+
+          </div>
+          </Col>
+          <Col>
+          <Container className="game-area">
+          <Row>
+            <Col className="mx-auto">
+              <div className="mx-auto card-grave">
+
+              </div>
+            </Col>
+          </Row>
+          </Container>
+          </Col>
+          <Col>
+            <div className="mx-auto portrait">
+            </div>
+          </Col >
+        </Row>
+        <Row>
+          <Col>
+          </Col>
+          <Col>
+            <div className="mx-auto portrait">
+            
+            </div>
+          </Col>
+          <Col>
+          </Col>
+        </Row>
+        </Fragment>
+        )
+        }
       </Container>
     </div>
   )
