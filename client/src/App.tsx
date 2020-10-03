@@ -6,6 +6,7 @@ import {
   Switch,
   Route, useParams, useHistory
 } from "react-router-dom";
+import {Button} from "react-bootstrap";
 
 function App() {
   const [socket,setSocket] = useState<SocketIOClient.Socket | null>(null);
@@ -47,13 +48,13 @@ function Home(props:SocketProps) {
     <div>
       <h1>Home</h1>
       <div>
-        <button onClick={() => {
+        <Button variant="outline-dark" onClick={() => {
           props.socket?.emit("createRoom")
-      }}>Create Room</button>
+      }}>Create Room</Button>
       </div>
       <div>
         <input placeholder="room id"></input>
-        <button>Join Room</button>
+        <Button variant="outline-dark" >Join Room</Button>
       </div>
     </div>
   )
@@ -83,10 +84,10 @@ function Game(props:SocketProps) {
       <div>
         {players.map(val => <h1>{val}</h1>)}
       </div>
-      <button onClick={() => {
+      <Button onClick={() => {
         props.socket?.emit("leaveRoom");
         history.push("/");
-    }}>Leave Room</button>
+    }}>Leave Room</Button>
       <input placeholder="name" value={name} onChange={handleChange}></input>
       <button onClick={() =>{
         console.log(params.roomID);
