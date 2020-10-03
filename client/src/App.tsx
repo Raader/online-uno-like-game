@@ -13,7 +13,7 @@ function App() {
 
   useEffect(() => {
     const socket = io("http://localhost:5000/");
-
+    document.body.style.backgroundColor = "#379b50";
     setSocket(socket);
     return function cleanup() {
       socket?.close()
