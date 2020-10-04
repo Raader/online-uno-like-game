@@ -56,11 +56,12 @@
 }
 
 .gcard{
-  width: 150px;
+  width: 145px;
   height: 250px;
-  background-color: rgba(240, 248, 255, 0.664);
+  background-color: rgba(60, 60, 61, 0.664);
   border: 6px solid rgb(53, 53, 53);
   border-radius: 5px;
+  background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
 }
 .deck{
   margin: 0.5cm;
@@ -68,6 +69,10 @@
   border: 3px solid rgb(53, 53, 53);
   border-radius: 5px;
   padding: 15px;
+  max-height: 300px;
+  overflow-y: scroll;
+}
+.card-list{
 }
 .game-area{
   margin-top: 0.5cm;
@@ -79,9 +84,12 @@
 
 .c-slot{
   float: left;
-  margin: 0.1cm;
+  margin: 0.07cm;
 }
 
+.header h1{
+  color: gold;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

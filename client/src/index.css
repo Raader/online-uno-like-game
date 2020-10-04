@@ -5,8 +5,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color:#379b50 ;
-  background-image: url("./patterns/foggy-birds.png"),linear-gradient( 110.6deg,  rgba(179,157,219,1) 7%, rgba(150,159,222,1) 47.7%, rgba(24,255,255,1) 100.6% );;
+  background-color:#b1412e ;
+  /*background-image: url("./patterns/foggy-birds.png"),linear-gradient( 110.6deg,  rgba(179,157,219,1) 7%, rgba(150,159,222,1) 47.7%, rgba(24,255,255,1) 100.6% );;*/
+  background-image: url("./patterns/foggy-birds.png");
   background-attachment: fixed;
 }
 code {

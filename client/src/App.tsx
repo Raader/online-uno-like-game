@@ -13,7 +13,7 @@ function App() {
 
   useEffect(() => {
     const socket = io("http://localhost:5000/");
-    document.body.style.backgroundColor = "#379b50";
+    document.body.style.backgroundColor = "#b1412e";
     setSocket(socket);
     return function cleanup() {
       socket?.close()
@@ -52,7 +52,7 @@ function Home(props: SocketProps) {
       <Container fluid>
         <Row>
           <Col>
-            <div>
+            <div className="header">
               <h1>ONLINE UNO</h1>
             </div>
           </Col>
@@ -66,7 +66,7 @@ function Home(props: SocketProps) {
                 aria-describedby="basic-addon2"
               />
               <InputGroup.Append>
-                <Button variant="outline-dark">Join</Button>
+                <Button variant="dark">Join</Button>
               </InputGroup.Append>
             </InputGroup>
           </Col>
@@ -74,7 +74,7 @@ function Home(props: SocketProps) {
         <Row className="mx-auto">
           <Col md="3" className="mx-auto" >
             <h2>OR</h2>
-            <Button variant="outline-dark" onClick={() => {
+            <Button variant="dark" onClick={() => {
               props.socket?.emit("createRoom")
             }}>Create Room</Button>
           </Col>
