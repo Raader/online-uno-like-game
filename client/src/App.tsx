@@ -97,6 +97,12 @@ function Game(props: SocketProps) {
   const history = useHistory();
   const [start, setStart] = useState(false)
   const [deck,setDeck] = useState<Array<Crd>>([]);
+  const colors:{[k:string]:string;} = {
+    "red" : "#FF5733",
+    "blue":"DEEPSKYBLUE",
+    "yellow":"GOLD",
+    "green":"LIGHTGREEN"
+  }
   useEffect(() => {
     if (!props.socket) return;
     props.socket.on("playerList", (list: Array<string>) => {
@@ -206,7 +212,7 @@ function Game(props: SocketProps) {
               <Container className="deck">
                 <Row className="card-list mx-auto">
                   {
-                    deck.map((val) => <div className="c-slot"><GCard color={val.color} number={val.num}></GCard></div>)
+                    deck.map((val) => <div className="c-slot"><GCard color={colors[val.color]} number={val.num}></GCard></div>)
                   }
                 </Row>
               </Container>
@@ -240,7 +246,7 @@ function Portrait(props:{name?:string}){
 }
 function GCard(props:{color?:string;number?:Number;}){
   return(
-    <div className="mx-auto gcard" style={props.color ? {borderColor:props.color} : {}}>
+    <div className="mx-auto gcard" style={props.color ? {borderColor:props.color,color:props.color} : {}}>
       <h1>{props.number}</h1>
     </div>
   )
