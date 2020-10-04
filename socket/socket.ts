@@ -4,7 +4,7 @@ import uuid = require("uuid");
 
 interface Player{
     user:User;
-    deck: Array<Card> | undefined;
+    deck: Array<Card>;
 }
 
 interface Card{
@@ -17,18 +17,54 @@ class Room{
     id:string;
     owner:User;
     players: Array<Player> = [];
-
-    constructor(owner:User){
+    started:Boolean = false;
+    pool:Array<Card> = [];
+    lastCard:Card;
+    onGameState:(states:{[k: string]: GameState}) => void;
+    constructor(owner:User,onGameState:(states:{[k: string]: GameState}) => void){
         this.id = uuid.v4();
         this.owner = owner;
+        this.createPool();
+        this.lastCard = this.pickCard();
+        this.onGameState = onGameState;
+    }
+
+    createPool(){
+        //construct card pool
+        for(let i = 0; i < 20;i++){
+            this.pool.push(
+            {
+                num:i % 10,
+                color:"blue",
+                name:"normal"
+            },
+            {
+                num:i % 10,
+                color:"red",
+                name:"normal"
+            },
+            {
+                num:i % 10,
+                color:"green",
+                name:"normal"
+            },
+            {
+                num:i % 10,
+                color:"yellow",
+                name:"normal"
+            },
+            );
+        }
+        const names = ["+2","direction","skip"]
+        const colors = ["blue","green","yellow","red"];
     }
 
     addPlayer(user:User,callback:(pList:Array<Player>) => void){
-        if(this.players.length < 4){
+        if(this.players.length < 4 && !this.started){
             //add player to players
             this.players.push({
                 user,
-                deck:undefined
+                deck:[]
             });
             //notify players
             callback(this.players);       
@@ -43,9 +79,49 @@ class Room{
 
     startGame(user:User,callback:() => void){
         if(user === this.owner && this.players.length > 1){
+            this.started = true;
+            this.giveCards();
             callback();
+            this.processGameState();
         }
     }
+
+    pickCard(){
+        const index = Math.floor((Math.random() * this.pool.length) + 1);
+        const card = this.pool[index];
+        this.pool.splice(index,1);
+        return card;
+    }
+
+    giveCards(){
+        for(let player of this.players){
+            for(let i = 0; i < 7;i++){
+                const card = this.pickCard();
+                if(card){
+                    player.deck?.push(card);
+                }
+            }
+        }
+    }
+
+    processGameState(){
+        const states:{[k: string]: GameState} = {};
+        for(let player of this.players){
+            states[player.user.name] = {
+                lastCard:this.lastCard,
+                deck:player.deck,
+                turn:""
+            }
+        }
+        this.onGameState(states);
+    }
+}
+
+interface GameState{
+    //TODO card count
+    lastCard:Card;
+    deck:Array<Card> | undefined;
+    turn:string;
 }
 
 class User{
@@ -73,7 +149,15 @@ export function createSocket(server:http.Server){
             //check if user is already in a room
             if(user.room) return;
             //create room
-            const room = new Room(user);
+            const room = new Room(user,(states) =>{
+                const keys = Object.keys(states);
+                for(let key of keys){
+                    const user = users.find((val) => val.name === key);
+                    if(user){
+                        user.socket.emit("gameState",states[key]);
+                    }
+                }
+            });
             rooms.push(room);
             //notify users about the room
             socket.emit("createRoom",room.id);

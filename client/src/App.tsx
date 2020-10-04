@@ -85,13 +85,18 @@ function Home(props: SocketProps) {
 }
 
 
-
+interface Crd{
+  name:string;
+  color:string;
+  num:Number;
+}
 function Game(props: SocketProps) {
   const params = useParams<{ roomID: string }>();
   const [name, setName] = useState("");
   const [players, setPlayers] = useState<Array<string>>([]);
   const history = useHistory();
   const [start, setStart] = useState(false)
+  const [deck,setDeck] = useState<Array<Crd>>([]);
   useEffect(() => {
     if (!props.socket) return;
     props.socket.on("playerList", (list: Array<string>) => {
@@ -99,8 +104,12 @@ function Game(props: SocketProps) {
     });
     props.socket.on("startGame", () => {
       setStart(true);
-    })
-  }, [props.socket])
+    });
+    props.socket.on("gameState",(state:{[k:string]:any; deck:Array<Crd>}) =>{
+      console.log(state);
+      setDeck(state.deck);
+    });
+  }, [props.socket]);
 
   function handleChange(e: { target: HTMLInputElement; }) {
     setName(e.target.value)
@@ -116,7 +125,7 @@ function Game(props: SocketProps) {
             </div>
           </Col>
         </Row>
-        {!true ?
+        {!start ?
           (
             <Row>
               {players.length !== 0 ?
@@ -196,13 +205,9 @@ function Game(props: SocketProps) {
               <Row>
               <Container className="deck">
                 <Row className="card-list mx-auto">
-                  <div className="c-slot"><GCard></GCard></div>
-                  <div className="c-slot"><GCard></GCard></div>
-                  <div className="c-slot"><GCard></GCard></div>
-                  <div className="c-slot"><GCard></GCard></div>
-                  <div className="c-slot"><GCard></GCard></div>
-                  <div className="c-slot"><GCard></GCard></div>
-                  <div className="c-slot"><GCard></GCard></div>
+                  {
+                    deck.map((val) => <div className="c-slot"><GCard color={val.color} number={val.num}></GCard></div>)
+                  }
                 </Row>
               </Container>
               </Row>

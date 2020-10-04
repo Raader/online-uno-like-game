@@ -90,11 +90,21 @@
 .header h1{
   color: gold;
 }
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+
+@media screen and (max-width: 700px) {
+  .gcard{
+    width: 70px;
+    height: 125px;
   }
-  to {
-    transform: rotate(360deg);
+  .gcard h1{
+    font-size: xx-large;
+  }
+  .grave{
+    width: 125px;
+    height: 150px;
+  }
+  .portrait{
+    width: 64px;
+    height: 64px;
   }
 }
