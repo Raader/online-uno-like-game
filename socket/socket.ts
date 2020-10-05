@@ -20,6 +20,7 @@ class Room{
     started:Boolean = false;
     pool:Array<Card> = [];
     lastCard:Card;
+    turn:number = 0;
     onGameState:(states:{[k: string]: GameState}) => void;
     constructor(owner:User,onGameState:(states:{[k: string]: GameState}) => void){
         this.id = uuid.v4();
@@ -104,13 +105,38 @@ class Room{
         }
     }
 
+    compareCard(card1:Card,card2:Card): Boolean{
+        return card1.color === card2.color || card1.num === card2.num;
+    }   
+
+    nextTurn(){
+        const next = this.turn + 1;
+        this.turn = next >= this.players.length ? 0 : next;
+    }
+
+    playCard(user:User,cardIndex:number){
+        //check if the player exists
+        const player = this.players.find((val) => val.user === user);
+        if(!player) return;
+        //check if the card exists
+        const card = player.deck[cardIndex];
+        if(!card) return;
+        if(this.compareCard(card,this.lastCard)){
+            player.deck.splice(player.deck.indexOf(card),1);
+            this.lastCard = card
+            this.nextTurn();
+            this.processGameState();
+        }
+
+    }
+
     processGameState(){
         const states:{[k: string]: GameState} = {};
         for(let player of this.players){
             states[player.user.name] = {
                 lastCard:this.lastCard,
                 deck:player.deck,
-                turn:this.players[0].user.name
+                turn:this.players[this.turn].user.name
             }
         }
         this.onGameState(states);
@@ -202,6 +228,14 @@ export function createSocket(server:http.Server){
                 io.to(room.id).emit("startGame");
             }); 
         });
+
+        socket.on("playCard",(cardIndex:number) => {
+            const room = user.room;
+            //check if user is in a room
+            if(!room) return;
+            //play the card
+            room.playCard(user,cardIndex);
+        })
 
         socket.on("disconnecting",() =>{
             //remove user from the room if he joined any

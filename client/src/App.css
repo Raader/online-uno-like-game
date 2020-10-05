@@ -84,6 +84,7 @@
 .c-slot{
   float: left;
   margin: 0.07cm;
+  cursor: pointer;
 }
 
 .header h1{

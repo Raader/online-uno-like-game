@@ -228,10 +228,18 @@ function Game(props: SocketProps) {
               <Container className="deck">
                 <Row className="card-list mx-auto">
                   {
-                    deck.map((val) => <div className="c-slot"><GCard color={colors[val.color]} number={val.num}></GCard></div>)
+                    deck.map((val,index) => <div className="c-slot" onClick={() =>{
+                      props.socket?.emit("playCard",index);
+                    }}><GCard color={colors[val.color]} number={val.num}></GCard></div>)
                   }
                 </Row>
               </Container>
+              <Row>
+                <Col className="mx-auto">
+                  <Button variant="dark">Draw a card</Button>
+                  <Button variant="danger">Pass</Button>
+                </Col>
+              </Row>
               </Row>
             </Fragment>
           )
