@@ -22,13 +22,17 @@ class Room{
     lastCard:Card;
     turn:number = 0;
     drawn:boolean = false;
+    finished:boolean = false;
     onGameState:(states:{[k: string]: GameState}) => void;
-    constructor(owner:User,onGameState:(states:{[k: string]: GameState}) => void){
+    onGameEnd:(winner:User) => void;
+
+    constructor(owner:User,onGameState:(states:{[k: string]: GameState}) => void,onGameEnd:(winner:User) => void){
         this.id = uuid.v4();
         this.owner = owner;
         this.createPool();
         this.lastCard = this.pickCard();
         this.onGameState = onGameState;
+        this.onGameEnd = onGameEnd;
     }
 
     createPool(){
@@ -126,6 +130,8 @@ class Room{
     }
 
     playCard(user:User,cardIndex:number){
+        //check if game has ended
+        if(this.finished) return;
         //check if the player exists
         const player = this.players.find((val) => val.user === user);
         if(!player) return;
@@ -137,11 +143,14 @@ class Room{
             this.lastCard = card
             this.nextTurn();
             this.processGameState();
+            this.checkGame();
         }
 
     }
 
     drawCard(user:User){
+        //check if game has ended
+        if(this.finished) return;
         //check if the player exists
         const player = this.players.find((val) => val.user === user);
         if(!player) return;
@@ -154,6 +163,15 @@ class Room{
             this.nextTurn();
         }
         this.processGameState();
+    }
+
+    checkGame(){
+        for(let player of this.players){
+            if(player.deck.length <= 0){
+                this.finished = true;
+                this.onGameEnd(player.user);
+            }
+        }
     }
 
     processGameState(){
@@ -209,6 +227,13 @@ export function createSocket(server:http.Server){
                         user.socket.emit("gameState",states[key]);
                     }
                 }
+            },
+            (winner) =>{
+                for(let player of room.players){
+                    player.user.room = undefined;
+                    rooms.splice(rooms.indexOf(room),1);
+                }
+                io.to(room.id).emit("finishGame",winner.name);
             });
             rooms.push(room);
             //notify users about the room
