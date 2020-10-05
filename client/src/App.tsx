@@ -236,7 +236,7 @@ function Game(props: SocketProps) {
               </Container>
               <Row>
                 <Col className="mx-auto">
-                  <Button variant="dark">Draw a card</Button>
+                  <Button variant="dark"  onClick={() => props.socket?.emit("drawCard")}>Draw a card</Button>
                   <Button variant="danger">Pass</Button>
                 </Col>
               </Row>

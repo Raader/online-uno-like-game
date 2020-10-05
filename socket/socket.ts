@@ -21,6 +21,7 @@ class Room{
     pool:Array<Card> = [];
     lastCard:Card;
     turn:number = 0;
+    drawn:boolean = false;
     onGameState:(states:{[k: string]: GameState}) => void;
     constructor(owner:User,onGameState:(states:{[k: string]: GameState}) => void){
         this.id = uuid.v4();
@@ -46,7 +47,7 @@ class Room{
             },
             {
                 num:i % 10,
-                color:"green",
+                color:"green", 
                 name:"normal"
             },
             {
@@ -111,7 +112,17 @@ class Room{
 
     nextTurn(){
         const next = this.turn + 1;
+        this.drawn = false;
         this.turn = next >= this.players.length ? 0 : next;
+    }
+
+    evaluateDeck(player:Player){
+        for(let card of player.deck){
+            if(this.compareCard(card,this.lastCard)){
+                return true;
+            }
+        }
+        return false;
     }
 
     playCard(user:User,cardIndex:number){
@@ -128,6 +139,21 @@ class Room{
             this.processGameState();
         }
 
+    }
+
+    drawCard(user:User){
+        //check if the player exists
+        const player = this.players.find((val) => val.user === user);
+        if(!player) return;
+        //check if card is already drawn
+        if(this.drawn) return;
+        //give card to player
+        this.drawn = true;
+        player.deck.push(this.pickCard());
+        if(!this.evaluateDeck(player)){
+            this.nextTurn();
+        }
+        this.processGameState();
     }
 
     processGameState(){
@@ -235,6 +261,14 @@ export function createSocket(server:http.Server){
             if(!room) return;
             //play the card
             room.playCard(user,cardIndex);
+        })
+
+        socket.on("drawCard",() =>{
+            const room = user.room;
+            //check if user is in a room
+            if(!room) return;
+            //drawCard
+            room.drawCard(user);
         })
 
         socket.on("disconnecting",() =>{
