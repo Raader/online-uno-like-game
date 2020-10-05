@@ -96,6 +96,7 @@ function Game(props: SocketProps) {
   const [players, setPlayers] = useState<Array<string>>([]);
   const history = useHistory();
   const [start, setStart] = useState(false)
+  const [lastCard,setLastCard] = useState<Crd>();
   const [deck,setDeck] = useState<Array<Crd>>([]);
   const colors:{[k:string]:string;} = {
     "red" : "#FF5733",
@@ -111,9 +112,10 @@ function Game(props: SocketProps) {
     props.socket.on("startGame", () => {
       setStart(true);
     });
-    props.socket.on("gameState",(state:{[k:string]:any; deck:Array<Crd>}) =>{
+    props.socket.on("gameState",(state:{[k:string]:any; deck:Array<Crd>; lastCard:Crd;}) =>{
       console.log(state);
       setDeck(state.deck);
+      setLastCard(state.lastCard);
     });
   }, [props.socket]);
 
@@ -189,7 +191,7 @@ function Game(props: SocketProps) {
                     <Row>
                       <Col className="mx-auto">
                         <div className="mx-auto grave">
-                          <GCard number={5} color="red"></GCard>
+                          <GCard number={lastCard?.num} color={lastCard ? colors[lastCard.color] : ""}></GCard>
                         </div>
                       </Col>
                     </Row>
