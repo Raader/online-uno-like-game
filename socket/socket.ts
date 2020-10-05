@@ -110,7 +110,7 @@ class Room{
             states[player.user.name] = {
                 lastCard:this.lastCard,
                 deck:player.deck,
-                turn:""
+                turn:this.players[0].user.name
             }
         }
         this.onGameState(states);
