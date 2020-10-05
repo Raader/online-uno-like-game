@@ -107,9 +107,10 @@ function Game(props: SocketProps) {
   useEffect(() => {
     if (!props.socket) return;
     props.socket.on("playerList", (list: Array<string>) => {
+      console.log(list);
       setPlayers(list);
     });
-    props.socket.on("startGame", () => {
+    props.socket.on("startGame", () => {    
       setStart(true);
     });
     props.socket.on("gameState",(state:{[k:string]:any; deck:Array<Crd>; lastCard:Crd;}) =>{
@@ -118,6 +119,15 @@ function Game(props: SocketProps) {
       setLastCard(state.lastCard);
     });
   }, [props.socket]);
+  useEffect(() =>{
+    if(!start) return;
+    const arr = players.map((val) => val);
+    while(arr[0] !== name){
+      const e = arr.shift();
+      arr.push(e ? e : "");
+    }
+    setPlayers(arr);
+  },[players,name,start])
 
   function handleChange(e: { target: HTMLInputElement; }) {
     setName(e.target.value)
@@ -177,14 +187,14 @@ function Game(props: SocketProps) {
                 <Col>
                 </Col>
                 <Col>
-                  <Portrait name="daruk"></Portrait>
+                  <Portrait name={players[2] ? players[2] : ""}></Portrait>
                 </Col>
                 <Col>
                 </Col>
               </Row>
               <Row>
                 <Col md="3">
-                  <Portrait name="maruk"></Portrait>
+                  <Portrait name={players[3] ? players[3] : ""}></Portrait>
                 </Col>
                 <Col>
                   <Container className="game-area">
@@ -198,14 +208,14 @@ function Game(props: SocketProps) {
                   </Container>
                 </Col>
                 <Col md="3">
-                  <Portrait name="faruk"></Portrait>     
+                  <Portrait name={players[1] ? players[1] : ""}></Portrait>     
                 </Col >
               </Row>
               <Row>
                 <Col>
                 </Col>
                 <Col>
-                  <Portrait name="caruk"></Portrait>
+                  <Portrait name={players[0] ? players[0] : ""}></Portrait>
                 </Col>
                 <Col>
                 </Col>
