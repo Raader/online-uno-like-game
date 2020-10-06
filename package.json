@@ -8,7 +8,9 @@
     "build": "tsc",
     "prod": "tsc && npm run start",
     "dev": "tsc && nodemon --ext ts --exec \"ts-node server/server.ts\"",
-    "client": "npm run start --prefix client"
+    "client": "npm run start --prefix client",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+
   },
   "nodemonConfig": {
     "verbose": true,
