@@ -20,7 +20,7 @@ class Room{
     started:Boolean = false;
     pool:Array<Card> = [];
     lastCard:Card;
-    turn:number = 0;
+    turn:Player | undefined;
     drawn:boolean = false;
     finished:boolean = false;
     onGameState:(states:{[k: string]: GameState}) => void;
@@ -33,6 +33,7 @@ class Room{
         this.lastCard = this.pickCard();
         this.onGameState = onGameState;
         this.onGameEnd = onGameEnd;
+
     }
 
     createPool(){
@@ -86,6 +87,7 @@ class Room{
     startGame(user:User,callback:() => void){
         if(user === this.owner && this.players.length > 1){
             this.started = true;
+            this.turn = this.players[0];
             this.giveCards();
             callback();
             this.processGameState();
@@ -115,9 +117,10 @@ class Room{
     }   
 
     nextTurn(){
-        const next = this.turn + 1;
+        if(!this.turn) return this.turn = this.players[0];
+        const next = this.players.indexOf(this.turn) + 1;
         this.drawn = false;
-        this.turn = next >= this.players.length ? 0 : next;
+        this.turn = next >= this.players.length ? this.players[0] : this.players[next];
     }
 
     evaluateDeck(player:Player){
@@ -135,6 +138,8 @@ class Room{
         //check if the player exists
         const player = this.players.find((val) => val.user === user);
         if(!player) return;
+        //check if it is players turn
+        if(this.turn !== player) return;
         //check if the card exists
         const card = player.deck[cardIndex];
         if(!card) return;
@@ -154,6 +159,8 @@ class Room{
         //check if the player exists
         const player = this.players.find((val) => val.user === user);
         if(!player) return;
+        //check if it is players turn
+        if(this.turn !== player) return;
         //check if card is already drawn
         if(this.drawn) return;
         //give card to player
@@ -175,12 +182,13 @@ class Room{
     }
 
     processGameState(){
+        if(!this.turn) return;
         const states:{[k: string]: GameState} = {};
         for(let player of this.players){
             states[player.user.name] = {
                 lastCard:this.lastCard,
                 deck:player.deck,
-                turn:this.players[this.turn].user.name
+                turn:this.turn.user.name
             }
         }
         this.onGameState(states);
