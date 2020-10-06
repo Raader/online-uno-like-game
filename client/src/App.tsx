@@ -121,6 +121,9 @@ function Game(props: SocketProps) {
       setLastCard(state.lastCard);
       setTurn(state.turn);
     });
+    props.socket.on("finishGame",(winner:string) =>{
+      history.push("/");
+    })
   }, [props.socket]);
   useEffect(() =>{
     if(!start || filtered) return;
