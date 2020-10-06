@@ -12,7 +12,7 @@ function App() {
   const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
 
   useEffect(() => {
-    const socket = io("http://localhost:5000/");
+    const socket = process.env.NODE_ENV === "production" ? io() : io("http://localhost:5000/");
     document.body.style.backgroundColor = "#b1412e";
     setSocket(socket);
     return function cleanup() {
