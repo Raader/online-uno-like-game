@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "node build/server.js",
-    "build": "tsc",
+    "build": "npm run tsc && npm run client-b",
     "prod": "tsc && npm run start",
     "dev": "tsc && nodemon --ext ts --exec \"ts-node server/server.ts\"",
     "client": "npm run start --prefix client",
-    "heroku-postbuild": "tsc && NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "client-b":"NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
+    "tsc":"tsc"
 
   },
   "nodemonConfig": {
