@@ -24,9 +24,9 @@ class Room{
     drawn:boolean = false;
     finished:boolean = false;
     onGameState:(states:{[k: string]: GameState}) => void;
-    onGameEnd:(winner:User) => void;
+    onGameEnd:(winner:User | undefined) => void;
 
-    constructor(owner:User,onGameState:(states:{[k: string]: GameState}) => void,onGameEnd:(winner:User) => void){
+    constructor(owner:User,onGameState:(states:{[k: string]: GameState}) => void,onGameEnd:(winner:User | undefined) => void){
         this.id = uuid.v4();
         this.owner = owner;
         this.createPool();
@@ -78,10 +78,17 @@ class Room{
         }
     }
     
-    removePlayer(user:User,calback:(plist:Array<Player>) => void){
+    removePlayer(user:User,callback:(plist:Array<Player>) => void){
         const index = this.players.findIndex((val) => val.user === user);
+        if(this.started && this.turn === this.players[index]){
+            this.nextTurn();
+        }
         this.players.splice(index,1);
-        calback(this.players);
+        callback(this.players);
+        this.processGameState();
+        if(this.players.length <= 1){
+            this.onGameEnd(undefined);
+        }
     }
 
     startGame(user:User,callback:() => void){
@@ -241,7 +248,7 @@ export function createSocket(server:http.Server){
                     player.user.room = undefined;
                     rooms.splice(rooms.indexOf(room),1);
                 }
-                io.to(room.id).emit("finishGame",winner.name);
+                io.to(room.id).emit("finishGame",winner? winner.name : "");
             });
             rooms.push(room);
             //notify users about the room

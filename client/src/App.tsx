@@ -110,6 +110,7 @@ function Game(props: SocketProps) {
     if (!props.socket) return;
     props.socket.on("playerList", (list: Array<string>) => {
       console.log(list);
+      setFiltered(false);
       setPlayers(list);
     });
     props.socket.on("startGame", () => {    
@@ -126,7 +127,7 @@ function Game(props: SocketProps) {
     })
   }, [props.socket]);
   useEffect(() =>{
-    if(!start || filtered) return;
+    if(!filtered) return;
     const arr = players.map((val) => val);
     while(arr[0] !== name){
       const e = arr.shift();
