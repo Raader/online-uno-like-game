@@ -231,11 +231,18 @@ function Game(props: SocketProps) {
               <Row>
               <Container className="deck">
                 <Row className="card-list mx-auto">
+                  <Col>
+                  <div id="sc-wrap" className="scroll-wrap" onWheel={(e) => {
+                    const element = document.getElementById("sc-wrap");
+                    if( element) element.scrollLeft += 1 * e.deltaY;
+                  }}>
                   {
                     deck.map((val,index) => <div className="c-slot" onClick={() =>{
                       props.socket?.emit("playCard",index);
                     }}><GCard color={colors[val.color]} number={val.num} name={val.name}></GCard></div>)
                   }
+                  </div>
+                  </Col>
                 </Row>
               </Container>
               <Row>
