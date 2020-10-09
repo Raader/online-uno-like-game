@@ -147,7 +147,7 @@ function Game(props: SocketProps) {
         <Row>
           <Col>
             <div>
-              <h1>Game</h1>
+              <h2>Game</h2>
             </div>
           </Col>
         </Row>
