@@ -30,8 +30,8 @@
 }
 
 .portrait{
-  width: 128px;
-  height: 128px;
+  width: 96px;
+  height: 96px;
   background-color: rgba(255, 255, 255, 0.575);
   border: 3px solid rgb(53, 53, 53);
   border-radius: 10px;
@@ -50,14 +50,14 @@
   transform: translateY(-50%);
 }
 .grave{
-  width: 300px;
-  height: 300px;
+  width: 200px;
+  height: 200px;
   margin: 0.5cm;
 }
 
 .gcard{
-  width: 145px;
-  height: 250px;
+  width: 100px;
+  height: 160px;
   background-color: whitesmoke;
   border: 3px solid rgb(53, 53, 53);
   border-radius: 5px;
@@ -67,8 +67,8 @@
 .deck .gcard:hover{
   display: inline-block;
   margin: 0;
-  width: 170px;
-  height: 275px;
+  width: 125px;
+  height: 185px;
 }
 
 .deck{
@@ -78,6 +78,7 @@
   border-radius: 5px;
   padding: 15px;
   max-height: 300px;
+  height: 200px;
   width: 500px;
 }
 .card-list{
