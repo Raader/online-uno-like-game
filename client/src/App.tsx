@@ -209,7 +209,7 @@ function Game(props: SocketProps) {
                     <Row>
                       <Col className="mx-auto">
                         <div className="mx-auto grave">
-                          <GCard number={lastCard?.num} color={lastCard ? colors[lastCard.color] : ""}></GCard>
+                          <GCard number={lastCard?.num} color={lastCard ? colors[lastCard.color] : ""} name={lastCard?.name}></GCard>
                         </div>
                       </Col>
                     </Row>
@@ -234,7 +234,7 @@ function Game(props: SocketProps) {
                   {
                     deck.map((val,index) => <div className="c-slot" onClick={() =>{
                       props.socket?.emit("playCard",index);
-                    }}><GCard color={colors[val.color]} number={val.num}></GCard></div>)
+                    }}><GCard color={colors[val.color]} number={val.num} name={val.name}></GCard></div>)
                   }
                 </Row>
               </Container>
@@ -272,10 +272,10 @@ function Portrait(props:{name?:string;turn:boolean}){
     </Container>
   )
 }
-function GCard(props:{color?:string;number?:Number;}){
+function GCard(props:{color?:string;number?:Number;name?:string}){
   return(
     <div className="mx-auto gcard" style={props.color ? {borderColor:props.color,color:props.color} : {}}>
-      <h1>{props.number}</h1>
+      <h1>{props.number && props.number <= 0 ? props.name : props.number}</h1>
     </div>
   )
 }

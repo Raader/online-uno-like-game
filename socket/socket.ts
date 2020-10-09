@@ -10,9 +10,9 @@ interface Player{
 interface Card{
     num:Number;
     name:"normal" | "+2" | "+4" | "direction" | "skip";
-    color: "blue" | "green" | "yellow" | "red" | "black";
+    color: CardColor;
 }
-
+type CardColor = "blue" | "green" | "yellow" | "red" | "black";
 class Room{
     id:string;
     owner:User;
@@ -63,7 +63,16 @@ class Room{
             );
         }
         const names = ["+2","direction","skip"]
-        const colors = ["blue","green","yellow","red"];
+        const colors:Array<CardColor> = ["blue","green","yellow","red"];
+        for(let color of colors){
+            for(let i = 0; i < 2; i++){
+                this.pool.push({
+                    num:-1,
+                    name:"+2",
+                    color:color
+                });
+            }
+        }
     }
 
     addPlayer(user:User,callback:(pList:Array<Player>) => void){
@@ -120,6 +129,7 @@ class Room{
     }
 
     compareCard(card1:Card,card2:Card): Boolean{
+        if(card1.name === "+2" && card1.name === card2.name) return true;
         return card1.color === card2.color || card1.num === card2.num;
     }   
 
@@ -152,8 +162,13 @@ class Room{
         if(!card) return;
         if(this.compareCard(card,this.lastCard)){
             player.deck.splice(player.deck.indexOf(card),1);
-            this.lastCard = card
+            this.lastCard = card 
             this.nextTurn();
+            if(card.name === "+2"){
+                for(let i = 0; i < 2; i++){
+                    this.turn.deck.push(this.pickCard());
+                }
+            }
             this.processGameState();
             this.checkGame();
         }
