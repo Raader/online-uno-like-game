@@ -6,7 +6,7 @@ import {
   Switch,
   Route, useParams, useHistory
 } from "react-router-dom";
-import { Button, Col, Container, Row, InputGroup, FormControl} from "react-bootstrap";
+import { Button, Col, Container, Row, InputGroup, FormControl, Modal} from "react-bootstrap";
 
 function App() {
   const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
@@ -100,6 +100,8 @@ function Game(props: SocketProps) {
   const [lastCard,setLastCard] = useState<Crd>();
   const [deck,setDeck] = useState<Array<Crd>>([]);
   const [turn,setTurn] = useState<string>("");
+  const [modal,setModal] = useState(false);
+  const [winner,setWinner] = useState("");
   const colors:{[k:string]:string;} = {
     "red" : "#FF5733",
     "blue":"DEEPSKYBLUE",
@@ -123,7 +125,9 @@ function Game(props: SocketProps) {
       setTurn(state.turn);
     });
     props.socket.on("finishGame",(winner:string) =>{
-      history.push("/");
+      setWinner(winner);
+      setModal(true);
+      setTimeout(() => history.push("/"),2000);
     })
   }, [props.socket]);
   useEffect(() =>{
@@ -143,6 +147,11 @@ function Game(props: SocketProps) {
 
   return (
     <div>
+      <Modal show={modal} onHide={() => setModal(false)}>
+        <Modal.Header>
+          <Modal.Title>{winner + " won"}</Modal.Title>
+        </Modal.Header>
+      </Modal>
       <Container>
         <Row>
           <Col>
