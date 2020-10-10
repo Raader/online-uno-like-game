@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import './App.css';
-import io from "socket.io-client";
+import io, { Socket } from "socket.io-client";
 import {
   BrowserRouter as Router,
   Switch,
@@ -127,7 +127,7 @@ function Game(props: SocketProps) {
     })
   }, [props.socket]);
   useEffect(() =>{
-    if(!filtered) return;
+    if(filtered || !start) return;
     const arr = players.map((val) => val);
     while(arr[0] !== name){
       const e = arr.shift();
@@ -207,7 +207,12 @@ function Game(props: SocketProps) {
                 <Col>
                   <Container className="game-area">
                     <Row>
-                      <Col className="mx-auto">
+                      <Col>
+                        <div className="mx-auto card-draw" onClick={() => props.socket?.emit("drawCard")}>
+                          <GCard></GCard>
+                        </div>
+                      </Col>
+                      <Col>
                         <div className="mx-auto grave">
                           <GCard number={lastCard?.num} color={lastCard ? colors[lastCard.color] : ""} name={lastCard?.name}></GCard>
                         </div>
@@ -245,12 +250,6 @@ function Game(props: SocketProps) {
                   </Col>
                 </Row>
               </Container>
-              <Row>
-                <Col className="mx-auto">
-                  <Button variant="dark"  onClick={() => props.socket?.emit("drawCard")}>Draw a card</Button>
-                  <Button variant="danger">Pass</Button>
-                </Col>
-              </Row>
               </Row>
             </Fragment>
           )

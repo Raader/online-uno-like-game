@@ -49,12 +49,15 @@
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-.grave{
-  width: 200px;
+.grave,.card-draw{
+  width: 100px;
   height: 160px;
   margin: 0.5cm;
 }
 
+.card-draw{
+  cursor: pointer;
+}
 .gcard{
   width: 80px;
   height: 140px;
@@ -67,8 +70,8 @@
 .deck .gcard:hover{
   display: inline-block;
   margin: 0;
-  width: 125px;
-  height: 185px;
+  width: 105px;
+  height: 165px;
 }
 
 .deck{
