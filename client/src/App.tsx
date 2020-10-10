@@ -7,6 +7,10 @@ import {
   Route, useParams, useHistory
 } from "react-router-dom";
 import { Button, Col, Container, Row, InputGroup, FormControl, Modal} from "react-bootstrap";
+import avatar0 from "./avatars/0.png"
+import avatar1 from "./avatars/1.png"
+import avatar2 from "./avatars/2.png"
+import avatar3 from "./avatars/3.png"
 
 function App() {
   const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
@@ -90,10 +94,15 @@ interface Crd{
   color:string;
   num:Number;
 }
+
+interface Player{
+  name:string;
+  avatar:string;
+}
 function Game(props: SocketProps) {
   const params = useParams<{ roomID: string }>();
   const [name, setName] = useState("");
-  const [players, setPlayers] = useState<Array<string>>([]);
+  const [players, setPlayers] = useState<Array<Player>>([]);
   const [filtered,setFiltered] = useState(false);
   const history = useHistory();
   const [start, setStart] = useState(false)
@@ -102,6 +111,7 @@ function Game(props: SocketProps) {
   const [turn,setTurn] = useState<string>("");
   const [modal,setModal] = useState(false);
   const [winner,setWinner] = useState("");
+  const [avatar,setAvatar] = useState("");
   const colors:{[k:string]:string;} = {
     "red" : "#FF5733",
     "blue":"DEEPSKYBLUE",
@@ -110,7 +120,7 @@ function Game(props: SocketProps) {
   }
   useEffect(() => {
     if (!props.socket) return;
-    props.socket.on("playerList", (list: Array<string>) => {
+    props.socket.on("playerList", (list: Array<Player>) => {
       console.log(list);
       setFiltered(false);
       setPlayers(list);
@@ -133,9 +143,9 @@ function Game(props: SocketProps) {
   useEffect(() =>{
     if(filtered || !start) return;
     const arr = players.map((val) => val);
-    while(arr[0] !== name){
+    while(arr[0].name !== name){
       const e = arr.shift();
-      arr.push(e ? e : "");
+      if(e) arr.push(e);
     }
     setFiltered(true);
     setPlayers(arr);
@@ -171,7 +181,7 @@ function Game(props: SocketProps) {
                       history.push("/");
                     }}> Leave Room</Button>
                     <div className="user-list">
-                      {players.map((val, index) => <h1 key={index}>{val}</h1>)}
+                      {players.map((val, index) => <h1 key={index}>{val.name}</h1>)}
                     </div>
                     <Button variant="dark" onClick={() => props.socket?.emit("startGame")}>Start Game</Button>
                   </Col>
@@ -179,6 +189,13 @@ function Game(props: SocketProps) {
                 :
                 (
                   <Col className="mx-auto" md="auto">
+                    <h3>Choose Your Avatar</h3>
+                    <div className="avatar-list">
+                      <img src={avatar0} className="avatar-disp" onClick={() => setAvatar(avatar0)} style={avatar === avatar0 ? {border:"2px solid black"} : {border:""}}></img>
+                      <img src={avatar1} className="avatar-disp" onClick={() => setAvatar(avatar1)} style={avatar === avatar1 ? {border:"2px solid black"} : {border:""}}></img>
+                      <img src={avatar2} className="avatar-disp" onClick={() => setAvatar(avatar2)} style={avatar === avatar2 ? {border:"2px solid black"} : {border:""}}></img>
+                      <img src={avatar3} className="avatar-disp" onClick={() => setAvatar(avatar3)} style={avatar === avatar3 ? {border:"2px solid black"} : {border:""}}></img>
+                    </div>
                     <InputGroup className="mb-3">
                       <FormControl onChange={(e) => setName(e.target.value)}
                         placeholder="Name"
@@ -188,7 +205,7 @@ function Game(props: SocketProps) {
                       <InputGroup.Append>
                         <Button variant="dark" onClick={() => {
                           console.log(params.roomID);
-                          props.socket?.emit("joinRoom", params.roomID, name);
+                          props.socket?.emit("joinRoom", params.roomID, name,avatar);
                         }}>Join</Button>
                       </InputGroup.Append>
                     </InputGroup>
@@ -204,14 +221,14 @@ function Game(props: SocketProps) {
                 <Col>
                 </Col>
                 <Col>
-                  <Portrait name={players[2] ? players[2] : ""} turn={turn.normalize() === players[2]?.normalize()}></Portrait>
+                  <Portrait avatar={players[2]?.avatar} name={players[2]?.name ? players[2].name : ""} turn={turn.normalize() === players[2]?.name?.normalize()}></Portrait>
                 </Col>
                 <Col>
                 </Col>
               </Row>
               <Row>
                 <Col md="3">
-                  <Portrait name={players[3] ? players[3] : ""} turn={turn.normalize() === players[3]?.normalize()}></Portrait>
+                  <Portrait avatar={players[3]?.avatar} name={players[3]?.name ? players[3].name : ""} turn={turn.normalize() === players[3]?.name?.normalize()}></Portrait>
                 </Col>
                 <Col>
                   <Container className="game-area">
@@ -230,14 +247,14 @@ function Game(props: SocketProps) {
                   </Container>
                 </Col>
                 <Col md="3">
-                  <Portrait name={players[1] ? players[1] : ""} turn={turn.normalize() === players[1]?.normalize()}></Portrait>     
+                  <Portrait avatar={players[1]?.avatar} name={players[1]?.name ? players[1].name : ""} turn={turn.normalize() === players[1]?.name?.normalize()}></Portrait>     
                 </Col >
               </Row>
               <Row>
                 <Col>
                 </Col>
                 <Col>
-                  <Portrait name={players[0] ? players[0] : ""} turn={turn.normalize() === players[0]?.normalize()}></Portrait>
+                  <Portrait avatar={players[0]?.avatar} name={players[0]?.name ? players[0].name : ""} turn={turn.normalize() === players[0]?.name?.normalize()}></Portrait>
                 </Col>
                 <Col>
                 </Col>
@@ -269,13 +286,13 @@ function Game(props: SocketProps) {
 }
 
 
-function Portrait(props:{name?:string;turn:boolean}){
+function Portrait(props:{name?:string;turn:boolean;avatar?:string}){
   return(
     <Container className="port-cont">
       <Row>
         <Col>
           <div className="mx-auto portrait" style={props.turn ? {borderColor:"greenyellow"} : {}}>
-      
+            {props.avatar ? <img src={props.avatar}></img> : <Fragment></Fragment>}
           </div>
         </Col>
       </Row>

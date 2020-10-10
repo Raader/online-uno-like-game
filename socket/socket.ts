@@ -227,11 +227,13 @@ interface GameState{
 class User{
     socket:socketio.Socket;
     name:string;
+    avatar:string;
     room:Room | undefined;
 
-    constructor(socket:socketio.Socket,name:string = ""){
+    constructor(socket:socketio.Socket,name:string = "",avatar:string = ""){
         this.socket = socket;
         this.name = name;
+        this.avatar = avatar;
     }
 }
 
@@ -271,7 +273,7 @@ export function createSocket(server:http.Server){
             console.log("new room" + room.id);
         });
 
-        socket.on("joinRoom",(id:string,name:string) =>{
+        socket.on("joinRoom",(id:string,name:string,avatar:string) =>{
             //check if user is already in a room
             if(user.room) return;
             const room = rooms.find((val) => val.id === id);
@@ -280,9 +282,10 @@ export function createSocket(server:http.Server){
             //join user to the room
             user.name = name;
             user.room = room;
+            user.avatar = avatar;
             user.socket.join(room.id);
             room.addPlayer(user,(players) => {
-                io.to(room.id).emit("playerList",players.map((val) => val.user.name));
+                io.to(room.id).emit("playerList",players.map((val) => {return {name:val.user.name,avatar:val.user.avatar}}));
                 console.log(`${user.name} joined the room: ${room.id}`);
             });
         });
@@ -293,7 +296,7 @@ export function createSocket(server:http.Server){
             if(room){
                 room.removePlayer(user,(players) =>{
                     user.room = undefined;
-                    io.to(room.id).emit("playerList",players.map((val) => val.user.name));
+                    io.to(room.id).emit("playerList",players.map((val) => {return {name:val.user.name,avatar:val.user.avatar}}));
                     console.log(`${user.name} left the room: ${room.id}`);
                 }); 
             }
@@ -332,7 +335,7 @@ export function createSocket(server:http.Server){
             if(room){
                 room.removePlayer(user,(players) =>{
                     user.room = undefined;
-                    io.to(room.id).emit("playerList",players.map((val) => val.user.name));
+                    io.to(room.id).emit("playerList",players.map((val) => {return {name:val.user.name,avatar:val.user.avatar}}));
                     console.log(`${user.name} left the room: ${room.id}`);
                 }); 
             }

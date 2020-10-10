@@ -105,6 +105,21 @@
   white-space: nowrap;
   
 }
+
+.avatar-disp{
+  width: 72px;
+  height: 72px;
+  margin: 0.1cm;
+  cursor: pointer;
+}
+
+.portrait img{
+  width: 64px;
+  height: 64px;
+}
+.avatar-list{
+  height: 80px;
+}
 ::-webkit-scrollbar {
   width: 10px;
 }
