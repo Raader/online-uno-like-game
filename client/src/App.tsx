@@ -13,7 +13,7 @@ function App() {
 
   useEffect(() => {
     const socket = process.env.NODE_ENV === "production" ? io() : io("http://localhost:5000/");
-    document.body.style.backgroundColor = "#b1412e";
+    document.body.style.backgroundColor = "LIGHTSEAGREEN";
     setSocket(socket);
     return function cleanup() {
       socket?.close()
@@ -157,14 +157,14 @@ function Game(props: SocketProps) {
               {players.length !== 0 ?
                 (
                   <Col>
-                    <Button variant="outline-dark" onClick={() => {
+                    <Button variant="dark" onClick={() => {
                       props.socket?.emit("leaveRoom");
                       history.push("/");
                     }}> Leave Room</Button>
                     <div className="user-list">
                       {players.map((val, index) => <h1 key={index}>{val}</h1>)}
                     </div>
-                    <Button variant="outline-dark" onClick={() => props.socket?.emit("startGame")}>Start Game</Button>
+                    <Button variant="dark" onClick={() => props.socket?.emit("startGame")}>Start Game</Button>
                   </Col>
                 )
                 :
@@ -177,7 +177,7 @@ function Game(props: SocketProps) {
                         aria-describedby="basic-addon2"
                       />
                       <InputGroup.Append>
-                        <Button variant="outline-dark" onClick={() => {
+                        <Button variant="dark" onClick={() => {
                           console.log(params.roomID);
                           props.socket?.emit("joinRoom", params.roomID, name);
                         }}>Join</Button>
@@ -209,7 +209,7 @@ function Game(props: SocketProps) {
                     <Row>
                       <Col>
                         <div className="mx-auto card-draw" onClick={() => props.socket?.emit("drawCard")}>
-                          <GCard></GCard>
+                          <GCard name={"draw"} number={-1}></GCard>
                         </div>
                       </Col>
                       <Col>
@@ -265,7 +265,7 @@ function Portrait(props:{name?:string;turn:boolean}){
     <Container className="port-cont">
       <Row>
         <Col>
-          <div className="mx-auto portrait" style={props.turn ? {borderColor:"green"} : {}}>
+          <div className="mx-auto portrait" style={props.turn ? {borderColor:"greenyellow"} : {}}>
       
           </div>
         </Col>

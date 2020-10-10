@@ -32,7 +32,7 @@
 .portrait{
   width: 72px;
   height: 72px;
-  background-color: rgba(255, 255, 255, 0.575);
+  background-color:rgb(194, 192, 192);
   border: 3px solid rgb(53, 53, 53);
   border-radius: 10px;
   
@@ -61,11 +61,15 @@
 .gcard{
   width: 80px;
   height: 140px;
-  background-color: whitesmoke;
-  border: 3px solid rgb(53, 53, 53);
+  background-color: rgb(51, 51, 51);
+  border: 3px solid rgb(119, 119, 119);
   border-radius: 5px;
   transition: width 0.5s,height 0.5s;
   white-space: nowrap;
+  color:  rgb(119, 119, 119);
+}
+.card-draw .gcard h1{
+  font-size: x-large;
 }
 .deck .gcard:hover{
   display: inline-block;
@@ -76,8 +80,8 @@
 
 .deck{
   margin: 0.5cm;
-  background-color: rgba(240, 248, 255, 0.486);
-  border: 3px solid rgb(53, 53, 53);
+  background-color: rgb(236, 236, 236);
+  border: 5px solid rgb(114, 114, 114);
   border-radius: 5px;
   padding: 15px;
   max-height: 300px;
@@ -92,7 +96,7 @@
 .game-area{
   margin-top: 0.5cm;
   margin-bottom: 0.5cm;
-  background-color: rgba(240, 248, 255, 0.664);
+  background-color: rgb(194, 192, 192);
   border-radius: 100px;
   border: 3px solid rgb(53, 53, 53);
 }
