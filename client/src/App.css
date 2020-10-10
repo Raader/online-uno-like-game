@@ -149,5 +149,42 @@
   color: gold;
 }
 
+.g-title{
+  color: gold;
+}
+
 @media screen and (max-width: 700px) {
+  .gcard{
+    width: 65px;
+    height: 100px;
+  }
+  .gcard h1{
+    font-size: xx-large;
+  }
+  .deck .gcard:hover{
+    width: 90px;
+    height: 125px;
+  }
+  .grave,.card-draw{
+    width: 85px;
+    height: 120px;
+    margin: 0.5cm;
+  }
+  .portrait {
+    width: 64px;
+    height: 64px;
+  }
+  .portrait img{
+    width: 55px;
+    height: 55px;
+  }
+  .portrait h4{
+    font-size: large;
+  }
+  .deck{
+    height: 130px;
+  }
+  .scroll-wrap::-webkit-scrollbar{
+    display: none;
+  }
 }

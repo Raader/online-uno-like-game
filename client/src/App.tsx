@@ -163,13 +163,13 @@ function Game(props: SocketProps) {
         </Modal.Header>
       </Modal>
       <Container>
-        <Row>
+      <Row>
           <Col>
             <div>
-              <h2>Game</h2>
+              <h3 className="g-title">Online Uno</h3>
             </div>
           </Col>
-        </Row>
+      </Row>
         {!start ?
           (
             <Row>
@@ -220,14 +220,14 @@ function Game(props: SocketProps) {
               <Row>
                 <Col>
                 </Col>
-                <Col>
+                <Col sm="3">
                   <Portrait avatar={players[2]?.avatar} name={players[2]?.name ? players[2].name : ""} turn={turn.normalize() === players[2]?.name?.normalize()}></Portrait>
                 </Col>
                 <Col>
                 </Col>
               </Row>
               <Row>
-                <Col md="3">
+                <Col sm="3">
                   <Portrait avatar={players[3]?.avatar} name={players[3]?.name ? players[3].name : ""} turn={turn.normalize() === players[3]?.name?.normalize()}></Portrait>
                 </Col>
                 <Col>
@@ -246,14 +246,14 @@ function Game(props: SocketProps) {
                     </Row>
                   </Container>
                 </Col>
-                <Col md="3">
+                <Col sm="3">
                   <Portrait avatar={players[1]?.avatar} name={players[1]?.name ? players[1].name : ""} turn={turn.normalize() === players[1]?.name?.normalize()}></Portrait>     
                 </Col >
               </Row>
               <Row>
                 <Col>
                 </Col>
-                <Col>
+                <Col sm="3">
                   <Portrait avatar={players[0]?.avatar} name={players[0]?.name ? players[0].name : ""} turn={turn.normalize() === players[0]?.name?.normalize()}></Portrait>
                 </Col>
                 <Col>
