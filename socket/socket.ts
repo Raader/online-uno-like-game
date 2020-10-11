@@ -71,6 +71,11 @@ class Room{
                     name:"+2",
                     color:color
                 });
+                this.pool.push({
+                    num:-1,
+                    name:"skip",
+                    color:color
+                });
             }
         }
     }
@@ -130,7 +135,8 @@ class Room{
 
     compareCard(card1:Card,card2:Card): Boolean{
         if(card1.name === "+2" && card1.name === card2.name) return true;
-        return card1.color === card2.color || card1.num === card2.num;
+        if(card1.name === "skip" && card1.name === card2.name) return true;
+        return card1.color === card2.color || (card1.num >= 0 &&card1.num === card2.num);
     }   
 
     nextTurn(){
@@ -168,6 +174,9 @@ class Room{
                 for(let i = 0; i < 2; i++){
                     this.turn.deck.push(this.pickCard());
                 }
+            }
+            else if(card.name ==="skip"){
+                this.nextTurn();
             }
             this.processGameState();
             this.checkGame();

@@ -11,6 +11,7 @@ import avatar0 from "./avatars/0.png"
 import avatar1 from "./avatars/1.png"
 import avatar2 from "./avatars/2.png"
 import avatar3 from "./avatars/3.png"
+import { GCard } from './components/GCard';
 
 function App() {
   const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
@@ -304,12 +305,4 @@ function Portrait(props:{name?:string;turn:boolean;avatar?:string}){
     </Container>
   )
 }
-function GCard(props:{color?:string;number?:Number;name?:string}){
-  return(
-    <div className="mx-auto gcard" style={props.color ? {borderColor:props.color,color:props.color} : {}}>
-      <h1>{props.number && props.number <= 0 ? props.name : props.number}</h1>
-    </div>
-  )
-}
-
 export default App;

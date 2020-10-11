@@ -68,6 +68,10 @@
   white-space: nowrap;
   color:  rgb(119, 119, 119);
 }
+
+.gcard img{
+  width: 70px;
+}
 .card-draw .gcard h1{
   font-size: x-large;
 }
