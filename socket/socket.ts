@@ -20,6 +20,7 @@ class Room{
     started:Boolean = false;
     pool:Array<Card> = [];
     lastCard:Card;
+    direction:number = 1;
     turn:Player | undefined;
     drawn:boolean = false;
     finished:boolean = false;
@@ -74,6 +75,11 @@ class Room{
                 this.pool.push({
                     num:-1,
                     name:"skip",
+                    color:color
+                });
+                this.pool.push({
+                    num:-1,
+                    name:"direction",
                     color:color
                 });
             }
@@ -136,14 +142,23 @@ class Room{
     compareCard(card1:Card,card2:Card): Boolean{
         if(card1.name === "+2" && card1.name === card2.name) return true;
         if(card1.name === "skip" && card1.name === card2.name) return true;
+        if(card1.name === "direction" && card1.name === card2.name) return true;
         return card1.color === card2.color || (card1.num >= 0 &&card1.num === card2.num);
     }   
 
     nextTurn(){
         if(!this.turn) return this.turn = this.players[0];
-        const next = this.players.indexOf(this.turn) + 1;
+        const next = this.players.indexOf(this.turn) + this.direction;
         this.drawn = false;
-        this.turn = next >= this.players.length ? this.players[0] : this.players[next];
+        if(next >= this.players.length){
+            this.turn = this.players[0];
+        }
+        else if(next < 0){
+            this.turn = this.players[this.players.length - 1];
+        }
+        else{
+            this.turn = this.players[next];
+        }
     }
 
     evaluateDeck(player:Player){
@@ -169,6 +184,9 @@ class Room{
         if(this.compareCard(card,this.lastCard)){
             player.deck.splice(player.deck.indexOf(card),1);
             this.lastCard = card 
+            if(card.name === "direction"){
+                this.direction = -this.direction;
+            }
             this.nextTurn();
             if(card.name === "+2"){
                 for(let i = 0; i < 2; i++){
@@ -178,6 +196,7 @@ class Room{
             else if(card.name ==="skip"){
                 this.nextTurn();
             }
+
             this.processGameState();
             this.checkGame();
         }
