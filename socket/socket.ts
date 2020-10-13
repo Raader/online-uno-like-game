@@ -1,6 +1,7 @@
 import socketio = require("socket.io");
 import http = require("http");
 import uuid = require("uuid");
+import { createAdd } from "typescript";
 
 interface Player{
     user:User;
@@ -9,7 +10,7 @@ interface Player{
 
 interface Card{
     num:Number;
-    name:"normal" | "+2" | "+4" | "direction" | "skip";
+    name:"normal" | "+2" | "+4" | "direction" | "skip" | "joker";
     color: CardColor;
 }
 type CardColor = "blue" | "green" | "yellow" | "red" | "black";
@@ -31,7 +32,7 @@ class Room{
         this.id = uuid.v4();
         this.owner = owner;
         this.createPool();
-        this.lastCard = this.pickCard();
+        this.lastCard = this.pickCard(["+2","+4","direction","skip","joker"]);
         this.onGameState = onGameState;
         this.onGameEnd = onGameEnd;
 
@@ -84,6 +85,13 @@ class Room{
                 });
             }
         }
+        for(let i = 0;i < 4; i++){
+            this.pool.push({
+                num:-1,
+                name:"joker",
+                color:"black"
+            })
+        }
     }
 
     addPlayer(user:User,callback:(pList:Array<Player>) => void){
@@ -121,9 +129,16 @@ class Room{
         }
     }
 
-    pickCard(){
-        const index = Math.floor((Math.random() * this.pool.length) + 1);
-        const card = this.pool[index];
+    pickCard(exclude:Array<string> = []){
+        let index:number;
+        let card:Card;
+        while(true){
+            index = Math.floor((Math.random() * this.pool.length) + 1);
+            card = this.pool[index];
+            if(!exclude.find((val) => val === card.name)){
+                break;
+            }
+        }
         this.pool.splice(index,1);
         return card;
     }
