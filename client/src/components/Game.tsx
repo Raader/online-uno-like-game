@@ -23,6 +23,7 @@ export function Game(props: {socket: SocketIOClient.Socket | null;}) {
   const [modal, setModal] = useState(false);
   const [winner, setWinner] = useState("");
   const [avatar, setAvatar] = useState("");
+  const [picker,setPicker] = useState(false);
   const colors: { [k: string]: string; } = {
     "red": "#FF5733",
     "blue": "DEEPSKYBLUE",
@@ -51,6 +52,9 @@ export function Game(props: {socket: SocketIOClient.Socket | null;}) {
       setModal(true);
       setTimeout(() => history.push("/"), 2000);
     });
+    props.socket.on("pickColor",() =>{
+      setPicker(true);
+    })
   }, [props.socket]);
   useEffect(() => {
     if (filtered || !start)
@@ -75,6 +79,19 @@ export function Game(props: {socket: SocketIOClient.Socket | null;}) {
         <Modal.Header>
           <Modal.Title>{winner + " won"}</Modal.Title>
         </Modal.Header>
+      </Modal>
+      <Modal show={picker}>
+        <Modal.Header>
+          <Modal.Title>Pick A Color !</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+           {
+             Object.keys(colors).map((key) => <Button style={{backgroundColor:colors[key]}} onClick={() => {
+               props.socket?.emit("pickColor",key);
+               setPicker(false);
+              }}>{key}</Button>)
+           }
+        </Modal.Body>
       </Modal>
       <Container>
         <Row>

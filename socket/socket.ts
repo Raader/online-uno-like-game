@@ -1,7 +1,6 @@
 import socketio = require("socket.io");
 import http = require("http");
 import uuid = require("uuid");
-import { createAdd } from "typescript";
 
 interface Player{
     user:User;
@@ -25,17 +24,19 @@ class Room{
     turn:Player | undefined;
     drawn:boolean = false;
     finished:boolean = false;
+    change:boolean = false;
     onGameState:(states:{[k: string]: GameState}) => void;
     onGameEnd:(winner:User | undefined) => void;
+    onColorPick:(user:User) => void;
 
-    constructor(owner:User,onGameState:(states:{[k: string]: GameState}) => void,onGameEnd:(winner:User | undefined) => void){
+    constructor(owner:User,onGameState:(states:{[k: string]: GameState}) => void,onGameEnd:(winner:User | undefined) => void,onColorPick:(user:User) => void){
         this.id = uuid.v4();
         this.owner = owner;
         this.createPool();
         this.lastCard = this.pickCard(["+2","+4","direction","skip","joker"]);
         this.onGameState = onGameState;
         this.onGameEnd = onGameEnd;
-
+        this.onColorPick = onColorPick;
     }
 
     createPool(){
@@ -155,6 +156,7 @@ class Room{
     }
 
     compareCard(card1:Card,card2:Card): Boolean{
+        if(card1.name === "joker") return true;
         if(card1.name === "+2" && card1.name === card2.name) return true;
         if(card1.name === "skip" && card1.name === card2.name) return true;
         if(card1.name === "direction" && card1.name === card2.name) return true;
@@ -165,6 +167,7 @@ class Room{
         if(!this.turn) return this.turn = this.players[0];
         const next = this.players.indexOf(this.turn) + this.direction;
         this.drawn = false;
+        this.change = false
         if(next >= this.players.length){
             this.turn = this.players[0];
         }
@@ -202,6 +205,11 @@ class Room{
             if(card.name === "direction"){
                 this.direction = -this.direction;
             }
+            else if(card.name === "joker"){
+                this.change = true;
+                this.onColorPick(player.user);
+                return;
+            }
             this.nextTurn();
             if(card.name === "+2"){
                 for(let i = 0; i < 2; i++){
@@ -216,6 +224,14 @@ class Room{
             this.checkGame();
         }
 
+    }
+
+    changeColor(user:User,color:CardColor){
+        if(this.turn?.user !== user || !this.change ) return;
+        this.lastCard.color = color;
+        this.nextTurn();
+        this.processGameState();
+        this.checkGame();
     }
 
     drawCard(user:User){
@@ -311,6 +327,9 @@ export function createSocket(server:http.Server){
                     rooms.splice(rooms.indexOf(room),1);
                 }
                 io.to(room.id).emit("finishGame",winner? winner.name : "");
+            },
+            (u) =>{
+                u.socket.emit("pickColor");
             });
             rooms.push(room);
             //notify users about the room
@@ -372,6 +391,13 @@ export function createSocket(server:http.Server){
             if(!room) return;
             //drawCard
             room.drawCard(user);
+        })
+
+        socket.on("pickColor",(color:CardColor) =>{
+            const room = user.room;
+            //check if user is in a room
+            if(!room) return;
+            room.changeColor(user,color);
         })
 
         socket.on("disconnecting",() =>{
