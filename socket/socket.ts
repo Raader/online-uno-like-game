@@ -238,7 +238,8 @@ class Room{
             states[player.user.name] = {
                 lastCard:this.lastCard,
                 deck:player.deck,
-                turn:this.turn.user.name
+                turn:this.turn.user.name,
+                direction:this.direction
             }
         }
         this.onGameState(states);
@@ -250,6 +251,7 @@ interface GameState{
     lastCard:Card;
     deck:Array<Card> | undefined;
     turn:string;
+    direction:number;
 }
 
 class User{
