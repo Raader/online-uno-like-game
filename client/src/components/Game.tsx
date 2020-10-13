@@ -28,7 +28,7 @@ export function Game(props: {socket: SocketIOClient.Socket | null;}) {
     "red": "#FF5733",
     "blue": "DEEPSKYBLUE",
     "yellow": "GOLD",
-    "green": "LIGHTGREEN"
+    "green": "LIGHTGREEN",
   };
   useEffect(() => {
     if (!props.socket)
