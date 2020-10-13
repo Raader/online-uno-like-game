@@ -397,6 +397,7 @@ export function createSocket(server:http.Server){
             const room = user.room;
             //check if user is in a room
             if(!room) return;
+            if(!["blue","red","yellow","green"].find((val) => val === color)) return;
             room.changeColor(user,color);
         })
 
