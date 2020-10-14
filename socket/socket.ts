@@ -1,6 +1,7 @@
 import socketio = require("socket.io");
 import http = require("http");
 import uuid = require("uuid");
+import { createAdd } from "typescript";
 
 interface Player{
     user:User;
@@ -92,6 +93,11 @@ class Room{
                 name:"joker",
                 color:"black"
             })
+            this.pool.push({
+                num:-1,
+                name:"+4",
+                color:"black"
+            })
         }
     }
 
@@ -156,6 +162,7 @@ class Room{
     }
 
     compareCard(card1:Card,card2:Card): Boolean{
+        if(card1.name === "+4") return true;
         if(card1.name === "joker") return true;
         if(card1.name === "+2" && card1.name === card2.name) return true;
         if(card1.name === "skip" && card1.name === card2.name) return true;
@@ -205,7 +212,7 @@ class Room{
             if(card.name === "direction"){
                 this.direction = -this.direction;
             }
-            else if(card.name === "joker"){
+            else if(card.color === "black"){
                 this.change = true;
                 this.onColorPick(player.user);
                 return;
@@ -230,6 +237,11 @@ class Room{
         if(this.turn?.user !== user || !this.change ) return;
         this.lastCard.color = color;
         this.nextTurn();
+        if(this.lastCard.name === "+4"){
+            for(let i = 0; i < 4; i++){
+                this.turn.deck.push(this.pickCard());
+            }
+        }
         this.processGameState();
         this.checkGame();
     }
