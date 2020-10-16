@@ -1,7 +1,6 @@
 import socketio = require("socket.io");
 import http = require("http");
 import uuid = require("uuid");
-import { createAdd } from "typescript";
 
 interface Player{
     user:User;
@@ -26,6 +25,7 @@ class Room{
     drawn:boolean = false;
     finished:boolean = false;
     change:boolean = false;
+    stack:number = 2;
     onGameState:(states:{[k: string]: GameState}) => void;
     onGameEnd:(winner:User | undefined) => void;
     onColorPick:(user:User) => void;
@@ -195,6 +195,17 @@ class Room{
         return false;
     }
 
+    findInDeck(player:Player,names:Array<string>){
+        for(let card of player.deck){
+            for(let name of names){
+                if(card.name === name){
+                    return true;
+                }
+            }
+        }
+        return false
+    }
+
     playCard(user:User,cardIndex:number){
         //check if game has ended
         if(this.finished) return;
@@ -217,13 +228,25 @@ class Room{
                 this.onColorPick(player.user);
                 return;
             }
-            this.nextTurn();
-            if(card.name === "+2"){
-                for(let i = 0; i < 2; i++){
+            if((card.name !== "+2" && card.name !== "+4") && this.stack > 0){
+                for(let i = 0; i < this.stack; i++){
                     this.turn.deck.push(this.pickCard());
                 }
+                this.stack = 0;
             }
-            else if(card.name ==="skip"){
+            this.nextTurn();
+            if(card.name === "+2"){
+                if(this.findInDeck(this.turn,["+2","+4"])){
+                    this.stack += 2;
+                }
+                else{
+                    for(let i = 0; i < this.stack + 2; i++){
+                        this.turn.deck.push(this.pickCard());
+                    }
+                    this.stack = 0;
+                }      
+            }
+            if(card.name ==="skip"){
                 this.nextTurn();
             }
 
@@ -238,8 +261,14 @@ class Room{
         this.lastCard.color = color;
         this.nextTurn();
         if(this.lastCard.name === "+4"){
-            for(let i = 0; i < 4; i++){
-                this.turn.deck.push(this.pickCard());
+            if(this.findInDeck(this.turn,["+4"])){
+                this.stack += 4;
+            }
+            else{
+                for(let i = 0; i < this.stack + 4; i++){
+                    this.turn.deck.push(this.pickCard());
+                }
+                this.stack = 0;
             }
         }
         this.processGameState();
