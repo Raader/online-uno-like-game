@@ -157,10 +157,10 @@
   color: gold;
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 1000px) {
   .gcard{
-    width: 65px;
-    height: 100px;
+    width: 60px;
+    height: 90px;
   }
   .gcard h1{
     font-size: xx-large;
@@ -169,26 +169,42 @@
     width: 90px;
     height: 125px;
   }
+  .g-title{
+    font-size: 0;
+  }
   .grave,.card-draw{
     width: 85px;
-    height: 120px;
+    height: 100px;
     margin: 0.5cm;
   }
   .portrait {
-    width: 64px;
-    height: 64px;
+    width: 48px;
+    height: 48px;
   }
-  .portrait img{
-    width: 55px;
-    height: 55px;
-  }
-  .portrait h4{
+  .portrait-name{
     font-size: large;
   }
+  .scroll-wrap{
+    width: 100%;
+  }
+  .portrait img{
+    width: 40px;
+    height: 40px;
+  }
+  .portrait h4{
+    font-size: medium;
+  }
   .deck{
-    height: 130px;
+    padding-top: 0;
+    height: 100px;
   }
   .scroll-wrap::-webkit-scrollbar{
     display: none;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .scroll-wrap{
+    width: 320px;
   }
 }
