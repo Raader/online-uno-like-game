@@ -32,8 +32,8 @@
 .portrait{
   width: 72px;
   height: 72px;
-  background-color:rgb(194, 192, 192);
-  border: 3px solid rgb(53, 53, 53);
+  background-color: rgb(236, 236, 236);
+  border: 3px solid rgb(114, 114, 114);
   border-radius: 10px;
   
   position: relative;
@@ -99,9 +99,9 @@
 .game-area{
   margin-top: 0.5cm;
   margin-bottom: 0.5cm;
-  background-color: rgb(194, 192, 192);
+  background-color: rgb(236, 236, 236);
   border-radius: 100px;
-  border: 3px solid rgb(53, 53, 53);
+  border: 3px solid rgb(114, 114, 114);
 }
 .scroll-wrap{
   overflow-x: auto;
