@@ -181,16 +181,11 @@ export function Game(props: {socket: SocketIOClient.Socket | null;}) {
               </Row>
               <Row>
                 <Col>
-                </Col>
-                <Col sm="3">
-                  <Portrait avatar={players[0]?.avatar} name={players[0]?.name ? players[0].name : ""} turn={turn.normalize() === players[0]?.name?.normalize()}></Portrait>
-                </Col>
-                <Col>
-                </Col>
-              </Row>
-              <Row>
                 <Container className="deck">
                   <Row className="card-list mx-auto">
+                    <Col xs="auto">
+                      <Portrait avatar={players[0]?.avatar} name={players[0]?.name ? players[0].name : ""} turn={turn.normalize() === players[0]?.name?.normalize()}></Portrait>
+                    </Col>
                     <Col>
                       <div id="sc-wrap" className="scroll-wrap" onWheel={(e) => {
                         const element = document.getElementById("sc-wrap");
@@ -204,6 +199,7 @@ export function Game(props: {socket: SocketIOClient.Socket | null;}) {
                     </Col>
                   </Row>
                 </Container>
+                </Col>
               </Row>
             </Fragment>
           )}

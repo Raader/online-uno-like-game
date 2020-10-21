@@ -14,7 +14,7 @@ export function Portrait(props: { name?: string; turn: boolean; avatar?: string;
       </Row>
       <Row>
         <div className="mx-auto">
-          <h4>{props.name}</h4>
+          <h4 className="portrait-name">{props.name}</h4>
         </div>
       </Row>
     </Container>
