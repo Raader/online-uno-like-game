@@ -32,7 +32,7 @@
 .portrait{
   width: 72px;
   height: 72px;
-  background-color: rgb(236, 236, 236);
+  background-color:rgb(221, 221, 221);
   border: 3px solid rgb(114, 114, 114);
   border-radius: 10px;
   
@@ -84,7 +84,7 @@
 
 .deck{
   margin: 0.5cm;
-  background-color: rgb(236, 236, 236);
+  background-color:rgb(221, 221, 221);
   border: 5px solid rgb(114, 114, 114);
   border-radius: 5px;
   padding: 15px;
@@ -99,7 +99,7 @@
 .game-area{
   margin-top: 0.5cm;
   margin-bottom: 0.5cm;
-  background-color: rgb(236, 236, 236);
+  background-color: rgb(221, 221, 221);
   border-radius: 100px;
   border: 3px solid rgb(114, 114, 114);
 }
@@ -166,8 +166,8 @@
     font-size: xx-large;
   }
   .deck .gcard:hover{
-    width: 90px;
-    height: 125px;
+    width: 60px;
+    height: 90px;
   }
   .g-title{
     font-size: 0;
