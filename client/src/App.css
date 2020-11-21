@@ -92,9 +92,6 @@
   height: 180px;
 }
 .card-list{
-  overflow-x: auto;
-  flex-wrap: nowrap;
-  display: flex;
 }
 .game-area{
   margin-top: 0.5cm;
@@ -107,7 +104,7 @@
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
-  
+  width: 720px;
 }
 
 .avatar-disp{
