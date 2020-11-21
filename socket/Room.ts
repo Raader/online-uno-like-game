@@ -32,8 +32,8 @@ export class Room {
     onGameEnd: (winner: User | undefined) => void;
     onColorPick: (user: User) => void;
 
-    constructor(owner: User, onGameState: (states: { [k: string]: GameState; }) => void, onGameEnd: (winner: User | undefined) => void, onColorPick: (user: User) => void) {
-        this.id = uuid.v4();
+    constructor(owner: User, id:string, onGameState: (states: { [k: string]: GameState; }) => void, onGameEnd: (winner: User | undefined) => void, onColorPick: (user: User) => void) {
+        this.id = id;
         this.owner = owner;
         this.createPool();
         this.lastCard = this.pickCard(["+2", "+4", "direction", "skip", "joker"]);

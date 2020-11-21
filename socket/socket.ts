@@ -3,6 +3,7 @@ import http = require("http");
 import { Room } from "./Room";
 import { User } from "./User";
 import { CardColor } from "./Card";
+import {generateId} from "./id_generator";
 
 export function createSocket(server:http.Server){
     const io = socketio(server);
@@ -17,8 +18,14 @@ export function createSocket(server:http.Server){
         socket.on("createRoom",() =>{
             //check if user is already in a room
             if(user.room) return;
+            //generate id
+            let id = "";
+            do{
+                id = generateId();
+            }
+            while(rooms.find((val) => val.id === id));
             //create room
-            const room = new Room(user,(states) =>{
+            const room = new Room(user,id,(states) =>{
                 const keys = Object.keys(states);
                 for(let key of keys){
                     const user = users.find((val) => val.name === key);
