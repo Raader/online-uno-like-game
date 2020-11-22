@@ -18,7 +18,7 @@ export function GCard(props: { color?: string; number?: Number; name?: string; }
     }
   },[props])
   return (
-    <div className="mx-auto gcard" style={props.color ? { borderColor: props.color, color: props.color } : {}}>
+    <div className="gcard" style={props.color ? { borderColor: props.color, color: props.color } : {}}>
       {ico}
     </div>
   );
