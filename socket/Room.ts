@@ -28,6 +28,7 @@ export class Room {
     finished: boolean = false;
     change: boolean = false;
     stack: number = 2;
+    grave: Array<Card> = [];
     onGameState: (states: { [k: string]: GameState; }) => void;
     onGameEnd: (winner: User | undefined) => void;
     onColorPick: (user: User) => void;
@@ -139,6 +140,10 @@ export class Room {
     }
 
     pickCard(exclude: Array<string> = []) {
+        if(this.pool.length <= 0){
+            this.pool.concat(this.grave);
+            this.grave = [];
+        }
         let index: number;
         let card: Card;
         while (true) {
@@ -231,6 +236,7 @@ export class Room {
             return;
         if (this.compareCard(card, this.lastCard)) {
             player.deck.splice(player.deck.indexOf(card), 1);
+            if(this.lastCard) this.grave.push(this.lastCard);
             this.lastCard = card;
             if (card.name === "direction") {
                 this.direction = -this.direction;
