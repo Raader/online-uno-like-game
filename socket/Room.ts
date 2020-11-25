@@ -27,7 +27,7 @@ export class Room {
     drawn: boolean = false;
     finished: boolean = false;
     change: boolean = false;
-    stack: number = 2;
+    stack: number = 0;
     grave: Array<Card> = [];
     onGameState: (states: { [k: string]: GameState; }) => void;
     onGameEnd: (winner: User | undefined) => void;
