@@ -24,6 +24,7 @@ export function Game(props: {socket: SocketIOClient.Socket | null;}) {
   const [winner, setWinner] = useState("");
   const [avatar, setAvatar] = useState("");
   const [picker,setPicker] = useState(false);
+  const [owner, setOwner] = useState(false);
   const colors: { [k: string]: string; } = {
     "red": "#FF5733",
     "blue": "DEEPSKYBLUE",
@@ -54,7 +55,10 @@ export function Game(props: {socket: SocketIOClient.Socket | null;}) {
     });
     props.socket.on("pickColor",() =>{
       setPicker(true);
-    })
+    });
+    props.socket.on("owner", () =>{
+      setOwner(true);
+    });
   }, [props.socket]);
   useEffect(() => {
     if (filtered || !start)
@@ -114,7 +118,7 @@ export function Game(props: {socket: SocketIOClient.Socket | null;}) {
                     <div className="user-list">
                       {players.map((val, index) => <h1 key={index}>{val.name}</h1>)}
                     </div>
-                    <Button variant="dark" onClick={() => props.socket?.emit("startGame")}>Start Game</Button>
+                    {owner ? <Button variant="dark" onClick={() => props.socket?.emit("startGame")}>Start Game</Button> : null}
                   </Col>
                 )
                 :
