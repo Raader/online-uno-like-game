@@ -116,7 +116,7 @@ export function Game(props: {socket: SocketIOClient.Socket | null;}) {
                       history.push("/");
                     }}> Leave Room</Button>
                     <div className="user-list">
-                      {players.map((val, index) => <h1 key={index}>{val.name}</h1>)}
+                      {players.map((val, index) => <div className="list-name"><h1 key={index}><span><img src={val.avatar}></img></span>{val.name}</h1></div>)}
                     </div>
                     {owner ? <Button variant="dark" onClick={() => props.socket?.emit("startGame")}>Start Game</Button> : null}
                   </Col>

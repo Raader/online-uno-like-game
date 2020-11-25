@@ -29,6 +29,12 @@
   color: #61dafb;
 }
 
+.list-name{
+  margin-top: 0.1cm;
+}
+.list-name h1{
+  text-align: left;
+}
 .portrait{
   width: 72px;
   height: 72px;
