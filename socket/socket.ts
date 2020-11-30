@@ -56,6 +56,8 @@ export function createSocket(server:http.Server){
             const room = rooms.find((val) => val.id === id);
             //check if the room exists
             if(!room) return;
+            //check username length
+            if(name.length > 12) return;
             //join user to the room
             user.name = name;
             user.room = room;
