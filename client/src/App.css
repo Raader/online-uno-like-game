@@ -239,7 +239,7 @@
   width: 100%;
 }
 .socials {
-  font-size: 5rem;
+  font-size: 4.5rem;
   text-align: center;
 }
 
@@ -277,6 +277,9 @@
   margin-bottom: 1rem;
 }
 @media screen and (max-width: 767px) {
+  .footer {
+    display: none;
+  }
   .scroll-wrap {
     width: 320px;
   }
