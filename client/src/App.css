@@ -29,6 +29,11 @@
   color: #61dafb;
 }
 
+.user-list {
+  border: 0.1rem black solid;
+  border-radius: 0.5rem;
+}
+
 .list-name {
   margin-top: 0.1cm;
 }
@@ -39,10 +44,9 @@
 .portrait {
   width: 72px;
   height: 72px;
-  background-color: rgb(221, 221, 221);
-  border: 3px solid rgb(114, 114, 114);
+  background-color: transparent;
+  border: 3px solid black;
   border-radius: 10px;
-
   position: relative;
   top: 50%;
   -ms-transform: translateY(-50%);
@@ -94,8 +98,8 @@
 
 .deck {
   margin: 0.5cm;
-  background-color: rgb(221, 221, 221);
-  border: 5px solid rgb(114, 114, 114);
+  background-color: transparent;
+  border: 5px solid black;
   border-radius: 5px;
   padding: 15px;
   max-height: 300px;
@@ -106,9 +110,9 @@
 .game-area {
   margin-top: 0.5cm;
   margin-bottom: 0.5cm;
-  background-color: rgb(221, 221, 221);
+  background-color: transparent;
   border-radius: 100px;
-  border: 3px solid rgb(114, 114, 114);
+  border: 3px solid black;
 }
 .scroll-wrap {
   overflow-x: auto;
