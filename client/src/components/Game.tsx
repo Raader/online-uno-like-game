@@ -122,10 +122,10 @@ export function Game(props: {socket: SocketIOClient.Socket | null;}) {
                   <Col className="mx-auto" md="auto">
                     <h3>Choose Your Avatar</h3>
                     <div className="avatar-list">
-                      <img src={avatar0} className="avatar-disp" onClick={() => setAvatar(avatar0)} style={avatar === avatar0 ? { border: "2px solid black" } : { border: "" }}></img>
-                      <img src={avatar1} className="avatar-disp" onClick={() => setAvatar(avatar1)} style={avatar === avatar1 ? { border: "2px solid black" } : { border: "" }}></img>
-                      <img src={avatar2} className="avatar-disp" onClick={() => setAvatar(avatar2)} style={avatar === avatar2 ? { border: "2px solid black" } : { border: "" }}></img>
-                      <img src={avatar3} className="avatar-disp" onClick={() => setAvatar(avatar3)} style={avatar === avatar3 ? { border: "2px solid black" } : { border: "" }}></img>
+                      <img src={avatar0} className="avatar-disp" onClick={() => setAvatar(avatar0)} style={avatar === avatar0 ? { outline: "3px solid black" } : { outline: "" }}></img>
+                      <img src={avatar1} className="avatar-disp" onClick={() => setAvatar(avatar1)} style={avatar === avatar1 ? { border: "3px solid black" } : { border: "" }}></img>
+                      <img src={avatar2} className="avatar-disp" onClick={() => setAvatar(avatar2)} style={avatar === avatar2 ? { border: "3px solid black" } : { border: "" }}></img>
+                      <img src={avatar3} className="avatar-disp" onClick={() => setAvatar(avatar3)} style={avatar === avatar3 ? { border: "3px solid black" } : { border: "" }}></img>
                     </div>
                     <InputGroup className="mb-3">
                       <FormControl onChange={(e) => setName(e.target.value)}

@@ -22,9 +22,9 @@ export function Home(props: {socket: SocketIOClient.Socket | null;}) {
           </Col>
         </Row>
         <Row>
-          <Col className="mx-auto" md="auto">
-            <InputGroup className="mb-3">
-              <FormControl style={{ backgroundColor: "rgba(245, 245, 245, 0.589)" }}
+          <Col>
+            <InputGroup className="roomby-id">
+              <FormControl
                 placeholder="Room ID"
                 aria-label="Recipient's username"
                 aria-describedby="basic-addon2" />
@@ -36,13 +36,22 @@ export function Home(props: {socket: SocketIOClient.Socket | null;}) {
         </Row>
         <Row className="mx-auto">
           <Col md="3" className="mx-auto">
+            <div className="or">
             <h2>OR</h2>
+            </div>
             <Button variant="dark" onClick={() => {
               props.socket?.emit("createRoom");
             }}>Create Room</Button>
           </Col>
         </Row>
       </Container>
+      <div className="footer">
+          <div className="socials">
+            <div className="social"><i className="fab fa-github"></i> Github</div>
+            <div className="social"><i className="fab fa-stack-overflow"></i> Stack</div>
+            <div className="social"><i className="fab fa-twitter"></i> Twitter</div>
+            </div>
+      </div>
     </div>
   );
 }

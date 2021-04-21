@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  font-family: 'Secular One', sans-serif;
+  font-family: "Secular One", sans-serif;
 }
 
 .App-logo {
@@ -29,98 +29,102 @@
   color: #61dafb;
 }
 
-.portrait{
+.portrait {
   width: 72px;
   height: 72px;
-  background-color:rgb(221, 221, 221);
+  background-color: rgb(221, 221, 221);
   border: 3px solid rgb(114, 114, 114);
   border-radius: 10px;
-  
+
   position: relative;
   top: 50%;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
   overflow-x: hidden;
 }
-.port-cont{
+.port-cont {
   margin: 0;
   position: relative;
   top: 50%;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-.grave,.card-draw{
+.grave,
+.card-draw {
   width: 100px;
   height: 160px;
   margin: 0.5cm;
 }
 
-.card-draw{
+.card-draw {
   cursor: pointer;
 }
-.gcard{
+.gcard {
   width: 80px;
   height: 140px;
   background-color: rgb(51, 51, 51);
   border: 3px solid rgb(119, 119, 119);
   border-radius: 5px;
-  transition: width 0.5s,height 0.5s,margin-left 0.5s,margin-right 0.5s;
+  transition: width 0.5s, height 0.5s, margin-left 0.5s, margin-right 0.5s;
   white-space: nowrap;
-  color:  rgb(119, 119, 119);
+  color: rgb(119, 119, 119);
 }
 
-.gcard img{
+.gcard img {
   width: 70px;
 }
-.card-draw .gcard h1{
+.card-draw .gcard h1 {
   font-size: x-large;
 }
-.deck .gcard{
+.deck .gcard {
   margin-left: -20px;
 }
-.deck .gcard:hover{
+.deck .gcard:hover {
   display: inline-block;
   margin-left: 0;
   margin-right: 20px;
 }
 
-.deck{
+.deck {
   margin: 0.5cm;
-  background-color:rgb(221, 221, 221);
+  background-color: rgb(221, 221, 221);
   border: 5px solid rgb(114, 114, 114);
   border-radius: 5px;
   padding: 15px;
   max-height: 300px;
   height: 180px;
 }
-.card-list{
+.card-list {
 }
-.game-area{
+.game-area {
   margin-top: 0.5cm;
   margin-bottom: 0.5cm;
   background-color: rgb(221, 221, 221);
   border-radius: 100px;
   border: 3px solid rgb(114, 114, 114);
 }
-.scroll-wrap{
+.scroll-wrap {
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
   width: 720px;
 }
 
-.avatar-disp{
+.avatar-disp {
   width: 72px;
   height: 72px;
   margin: 0.1cm;
   cursor: pointer;
+  padding: 0.1rem;
 }
 
-.portrait img{
+.portrait img {
   width: 64px;
   height: 64px;
 }
-.avatar-list{
+.avatar-list {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   height: 80px;
 }
 ::-webkit-scrollbar {
@@ -129,55 +133,64 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1a1; 
+  background: #f1f1f1a1;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgb(190, 32, 32); 
+  background: rgb(190, 32, 32);
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(238, 89, 89); 
+  background: rgb(238, 89, 89);
 }
 
-.c-slot{
+.c-slot {
   margin: 0.07cm;
   cursor: pointer;
   display: inline-block;
 }
 
-.header h1{
-  color: gold;
+.header h1 {
+  color: #75b9be;
+  margin-top: 1rem;
+  font-size: 10rem;
+  -webkit-text-stroke-width: 0.1rem;
+  -webkit-text-stroke-color: black;
 }
 
-.g-title{
-  color: gold;
+.g-title {
+  color: #75b9be;
+  font-size: 10rem;
+  margin-top: 1rem;
+  -webkit-text-stroke-width: 0.1rem;
+  -webkit-text-stroke-color: black;
 }
 
 @media screen and (max-width: 1000px) {
-  .gcard{
+  .gcard {
     margin: auto;
     width: 60px;
     height: 90px;
   }
-  .gcard h1{
+  .gcard h1 {
     font-size: xx-large;
   }
-  .deck .gcard{
+  .deck .gcard {
     margin-left: -16px;
   }
-  .deck .gcard:hover{
+  .deck .gcard:hover {
     width: 60px;
     height: 90px;
     margin-left: -18px;
     margin-right: auto;
   }
-  .g-title{
+  .g-title {
     font-size: 0;
   }
-  .grave,.card-draw{
+  .grave,
+  .card-draw {
     width: 85px;
     height: 100px;
     margin: 0.5cm;
@@ -186,30 +199,74 @@
     width: 48px;
     height: 48px;
   }
-  .portrait-name{
+  .portrait-name {
     font-size: large;
   }
-  .scroll-wrap{
+  .scroll-wrap {
     width: 500px;
   }
-  .portrait img{
+  .portrait img {
     width: 40px;
     height: 40px;
   }
-  .portrait h4{
+  .portrait h4 {
     font-size: medium;
   }
-  .deck{
+  .deck {
     padding-top: 0;
     height: 100px;
   }
-  .scroll-wrap::-webkit-scrollbar{
+  .scroll-wrap::-webkit-scrollbar {
     display: none;
   }
 }
 
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.socials {
+  font-size: 5rem;
+  text-align: center;
+}
+
+.social {
+  cursor: pointer;
+}
+.social:hover {
+  text-decoration: underline;
+}
+
+.roomby-id {
+  font-size: 2rem !important;
+}
+
+.form-control {
+  font-size: 2rem !important;
+  background-color: transparent !important;
+  border-color: black !important;
+}
+.form-control::selection {
+  box-shadow: 0 !important;
+  outline: 0 !important;
+}
+.btn-dark {
+  font-size: 2rem !important;
+}
+.or {
+  margin-top: 1rem;
+}
+
+.user-list {
+  height: 40vh;
+  overflow-y: scroll;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
 @media screen and (max-width: 767px) {
-  .scroll-wrap{
+  .scroll-wrap {
     width: 320px;
   }
 }

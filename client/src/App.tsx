@@ -13,7 +13,7 @@ function App() {
 
   useEffect(() => {
     const socket = process.env.NODE_ENV === "production" ? io() : io("http://localhost:5000/");
-    document.body.style.backgroundColor = "LIGHTSEAGREEN";
+    document.body.style.backgroundColor = "#f4c430";
     setSocket(socket);
     return function cleanup() {
       socket?.close()
