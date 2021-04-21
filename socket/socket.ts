@@ -56,11 +56,16 @@ export function createSocket(server:http.Server){
             const room = rooms.find((val) => val.id === id);
             //check if the room exists
             if(!room) return;
+            //check username length
+            if(name.length > 12) return;
             //join user to the room
             user.name = name;
             user.room = room;
             user.avatar = avatar;
             user.socket.join(room.id);
+            if(room.owner == user){
+                user.socket.emit("owner");
+            }
             room.addPlayer(user,(players) => {
                 io.to(room.id).emit("playerList",players.map((val) => {return {name:val.user.name,avatar:val.user.avatar}}));
                 console.log(`${user.name} joined the room: ${room.id}`);
