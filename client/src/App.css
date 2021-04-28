@@ -139,22 +139,7 @@
   height: 80px;
 }
 ::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: #f1f1f1a1;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: rgb(190, 32, 32);
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: rgb(238, 89, 89);
+  display: none;
 }
 
 .c-slot {
