@@ -196,9 +196,9 @@ export function Game(props: {socket: SocketIOClient.Socket | null;}) {
                         if (element)
                           element.scrollLeft += 1 * e.deltaY;
                       }}>
-                        {deck.map((val, index) => <div className="c-slot" onClick={() => {
+                        {deck.map((val, index) => val ?<div className="c-slot" onClick={() => {
                           props.socket?.emit("playCard", index);
-                        }}><GCard color={colors[val.color]} number={val.num} name={val.name}></GCard></div>)}
+                        }}><GCard color={colors[val.color]} number={val.num} name={val.name}></GCard></div> : <Fragment></Fragment>)}
                       </div>
                     </Col>
                   </Row>
